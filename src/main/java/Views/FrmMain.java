@@ -4,17 +4,39 @@
  */
 package Views;
 
+import Controllers.ClientController;
+import Controllers.ProductController;
+import java.awt.BorderLayout;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.InputStream;
+import java.sql.Connection;
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
+
 /**
  *
  * @author Ellian
  */
 public class FrmMain extends javax.swing.JFrame {
-
+    private JPanel currentPane = null;
+    private Connection conn = null;
     /**
      * Creates new form FrmMain
      */
     public FrmMain() {
         initComponents();
+        setLayout(new BorderLayout());
+        try {
+            InputStream is = getClass().getResourceAsStream("/logo.png");
+//            File imgFile = new File("src/main/java/Content/logo.png");
+//            System.out.println(imgFile.getAbsolutePath());
+            BufferedImage myImage = ImageIO.read(getClass().getResource("/logo.png"));
+            setContentPane(new ImagePanel(myImage)); 
+        } catch (Exception e) {
+            System.out.println("Erro carregando imagem de fundo: "+e);
+        }
+        
     }
 
     /**
@@ -26,7 +48,90 @@ public class FrmMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jMenuBar1 = new javax.swing.JMenuBar();
+        saleMenu = new javax.swing.JMenu();
+        newSaleMenuItem = new javax.swing.JMenuItem();
+        listSalesMenuItem = new javax.swing.JMenuItem();
+        clientMenu = new javax.swing.JMenu();
+        listClientMenuItem = new javax.swing.JMenuItem();
+        clientRegisterMenuItem = new javax.swing.JMenuItem();
+        productMenu = new javax.swing.JMenu();
+        listProductMenuItem = new javax.swing.JMenuItem();
+        productRegisterMenuItem = new javax.swing.JMenuItem();
+        exitMenu = new javax.swing.JMenu();
+        exitMenuItem = new javax.swing.JMenuItem();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("EK Tech");
+
+        saleMenu.setText("Vendas");
+
+        newSaleMenuItem.setText("Nova");
+        newSaleMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newSaleMenuItemActionPerformed(evt);
+            }
+        });
+        saleMenu.add(newSaleMenuItem);
+
+        listSalesMenuItem.setText("Consulta");
+        saleMenu.add(listSalesMenuItem);
+
+        jMenuBar1.add(saleMenu);
+
+        clientMenu.setText("Clientes");
+
+        listClientMenuItem.setText("Listar");
+        listClientMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listClientMenuItemActionPerformed(evt);
+            }
+        });
+        clientMenu.add(listClientMenuItem);
+
+        clientRegisterMenuItem.setText("Cadastrar");
+        clientRegisterMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clientRegisterMenuItemActionPerformed(evt);
+            }
+        });
+        clientMenu.add(clientRegisterMenuItem);
+
+        jMenuBar1.add(clientMenu);
+
+        productMenu.setText("Produtos");
+
+        listProductMenuItem.setText("Listar");
+        listProductMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listProductMenuItemActionPerformed(evt);
+            }
+        });
+        productMenu.add(listProductMenuItem);
+
+        productRegisterMenuItem.setText("Cadastro");
+        productRegisterMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                productRegisterMenuItemActionPerformed(evt);
+            }
+        });
+        productMenu.add(productRegisterMenuItem);
+
+        jMenuBar1.add(productMenu);
+
+        exitMenu.setText("Sair");
+
+        exitMenuItem.setText("Sair");
+        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitMenuItemActionPerformed(evt);
+            }
+        });
+        exitMenu.add(exitMenuItem);
+
+        jMenuBar1.add(exitMenu);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -36,47 +141,77 @@ public class FrmMain extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 277, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_exitMenuItemActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrmMain().setVisible(true);
-            }
-        });
-    }
+    private void listClientMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listClientMenuItemActionPerformed
+        createClientPane();
+    }//GEN-LAST:event_listClientMenuItemActionPerformed
+
+    private void productRegisterMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productRegisterMenuItemActionPerformed
+        ProductEditor editor = new ProductEditor();
+        editor.setVisible(true);
+        editor.setLocationRelativeTo(null);    
+    }//GEN-LAST:event_productRegisterMenuItemActionPerformed
+
+    private void newSaleMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSaleMenuItemActionPerformed
+        
+    }//GEN-LAST:event_newSaleMenuItemActionPerformed
+
+    private void listProductMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listProductMenuItemActionPerformed
+        createProductPane();
+    }//GEN-LAST:event_listProductMenuItemActionPerformed
+
+    private void clientRegisterMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientRegisterMenuItemActionPerformed
+        ClientEditor editor = new ClientEditor();
+        editor.setVisible(true);
+        editor.setLocationRelativeTo(null);
+    }//GEN-LAST:event_clientRegisterMenuItemActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu clientMenu;
+    private javax.swing.JMenuItem clientRegisterMenuItem;
+    private javax.swing.JMenu exitMenu;
+    private javax.swing.JMenuItem exitMenuItem;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem listClientMenuItem;
+    private javax.swing.JMenuItem listProductMenuItem;
+    private javax.swing.JMenuItem listSalesMenuItem;
+    private javax.swing.JMenuItem newSaleMenuItem;
+    private javax.swing.JMenu productMenu;
+    private javax.swing.JMenuItem productRegisterMenuItem;
+    private javax.swing.JMenu saleMenu;
     // End of variables declaration//GEN-END:variables
+    
+    public void createClientPane(){
+        if (currentPane == null) {
+            currentPane = new JpnClients(new ClientController(null));
+//            currentPane = new JpnClients();
+            getContentPane().add(currentPane,BorderLayout.CENTER);
+            getContentPane().revalidate();
+        }
+    }
+    
+    public void createProductPane(){
+        if (currentPane == null) {
+            currentPane = new JpnProducts(new ProductController(null));
+//            currentPane = new JpnClients();
+            getContentPane().add(currentPane,BorderLayout.CENTER);
+            getContentPane().revalidate();
+        }
+    }    
+    
+    public void clearFrame(){
+        remove(currentPane);
+        revalidate();
+        repaint();
+        currentPane = null;
+    }
 }

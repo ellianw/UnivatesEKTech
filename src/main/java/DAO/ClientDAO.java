@@ -24,7 +24,7 @@ public class ClientDAO {
         String sql = "INSERT INTO client (name, cpf, phone, email) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, client.getName());
-            stmt.setString(2, client.getCpf());
+            stmt.setString(2, client.getCPF());
             stmt.setString(3, client.getPhone());
             stmt.setString(4, client.getEmail());
             stmt.executeUpdate();
@@ -71,7 +71,7 @@ public class ClientDAO {
         String sql = "UPDATE client SET name = ?, cpf = ?, phone = ?, email = ? WHERE id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, client.getName());
-            stmt.setString(2, client.getCpf());
+            stmt.setString(2, client.getCPF());
             stmt.setString(3, client.getPhone());
             stmt.setString(4, client.getEmail());
             stmt.setInt(5, client.getId());

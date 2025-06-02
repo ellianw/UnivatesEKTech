@@ -31,7 +31,7 @@ public class Client {
         return name;
     }
 
-    public String getCpf() {
+    public String getCPF() {
         return cpf;
     }
 
