@@ -42,30 +42,23 @@ public class JpnProducts extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jspListTable = new javax.swing.JScrollPane();
-        jtbList = new javax.swing.JTable();
         btnPanel = new javax.swing.JPanel();
         btnNew = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnDel = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
+        searchPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jTextField1 = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
+        hintPane = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        listPane = new javax.swing.JPanel();
+        jspListTable = new javax.swing.JScrollPane();
+        jtbList = new javax.swing.JTable();
 
-        jtbList.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        jtbList.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jtbList.setRowSelectionAllowed(true);
-        jtbList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jtbList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jtbList.setShowHorizontalLines(true);
-        jspListTable.setViewportView(jtbList);
-        jtbList.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jtbList.setAutoCreateRowSorter(true);
+        setLayout(new java.awt.BorderLayout());
 
         btnPanel.setPreferredSize(new java.awt.Dimension(100, 100));
 
@@ -108,7 +101,7 @@ public class JpnProducts extends javax.swing.JPanel {
             .addGroup(btnPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(btnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnNew, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+                    .addComponent(btnNew, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
                     .addComponent(btnEdit, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnDel, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnExit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -128,26 +121,115 @@ public class JpnProducts extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(9, 9, 9)
-                .addComponent(jspListTable, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
-                .addGap(9, 9, 9))
+        add(btnPanel, java.awt.BorderLayout.EAST);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel1.setText("Produtos:");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Nome" }));
+
+        jButton3.setText("🔎");
+
+        javax.swing.GroupLayout searchPanelLayout = new javax.swing.GroupLayout(searchPanel);
+        searchPanel.setLayout(searchPanelLayout);
+        searchPanelLayout.setHorizontalGroup(
+            searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(searchPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(searchPanelLayout.createSequentialGroup()
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3)))
+                .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jspListTable, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
-                    .addComponent(btnPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE))
-                .addGap(45, 45, 45))
+        searchPanelLayout.setVerticalGroup(
+            searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3)))
         );
+
+        add(searchPanel, java.awt.BorderLayout.NORTH);
+
+        jLabel2.setFont(new java.awt.Font("Serif", 2, 12)); // NOI18N
+        jLabel2.setText("Dica: Utilize F5 como atalho para o botão de busca.");
+
+        javax.swing.GroupLayout hintPaneLayout = new javax.swing.GroupLayout(hintPane);
+        hintPane.setLayout(hintPaneLayout);
+        hintPaneLayout.setHorizontalGroup(
+            hintPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(hintPaneLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addContainerGap(144, Short.MAX_VALUE))
+        );
+        hintPaneLayout.setVerticalGroup(
+            hintPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(hintPaneLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        add(hintPane, java.awt.BorderLayout.PAGE_END);
+
+        jtbList.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                { new Integer(1), "Processador",  new Double(990.9),  new Double(10.0)}
+            },
+            new String [] {
+                "ID", "Descrição", "Valor", "Estoque"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jtbList.setColumnSelectionAllowed(true);
+        jtbList.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jtbList.setRowSelectionAllowed(true);
+        jtbList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jtbList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jtbList.setShowHorizontalLines(true);
+        jspListTable.setViewportView(jtbList);
+
+        javax.swing.GroupLayout listPaneLayout = new javax.swing.GroupLayout(listPane);
+        listPane.setLayout(listPaneLayout);
+        listPaneLayout.setHorizontalGroup(
+            listPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(listPaneLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jspListTable, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE))
+        );
+        listPaneLayout.setVerticalGroup(
+            listPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(listPaneLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jspListTable, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        add(listPane, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
@@ -195,13 +277,21 @@ public class JpnProducts extends javax.swing.JPanel {
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnNew;
     private javax.swing.JPanel btnPanel;
+    private javax.swing.JPanel hintPane;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JScrollPane jspListTable;
     private javax.swing.JTable jtbList;
+    private javax.swing.JPanel listPane;
+    private javax.swing.JPanel searchPanel;
     // End of variables declaration//GEN-END:variables
  
     private void exitPanel(){
         FrmMain parent = (FrmMain)SwingUtilities.getWindowAncestor(this);
-        parent.clearFrame();
+        parent.clearFrame(true);
     }
     
     public Integer getClientId() {

@@ -6,9 +6,10 @@ package Views;
 
 import Controllers.ClientController;
 import Controllers.ProductController;
+import Controllers.SaleController;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.InputStream;
 import java.sql.Connection;
 import javax.imageio.ImageIO;
@@ -26,17 +27,13 @@ public class FrmMain extends javax.swing.JFrame {
      */
     public FrmMain() {
         initComponents();
-        setLayout(new BorderLayout());
+        setLayout(new BorderLayout());   
+        createBackgroundPane();
         try {
-            InputStream is = getClass().getResourceAsStream("/logo.png");
-//            File imgFile = new File("src/main/java/Content/logo.png");
-//            System.out.println(imgFile.getAbsolutePath());
-            BufferedImage myImage = ImageIO.read(getClass().getResource("/logo.png"));
-            setContentPane(new ImagePanel(myImage)); 
+            setIconImage(ImageIO.read(getClass().getResource("/content/icon.png")));
         } catch (Exception e) {
-            System.out.println("Erro carregando imagem de fundo: "+e);
+            System.out.println("Error loading frame icon: "+e);
         }
-        
     }
 
     /**
@@ -63,6 +60,7 @@ public class FrmMain extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("EK Tech");
+        getContentPane().setLayout(new java.awt.FlowLayout());
 
         saleMenu.setText("Vendas");
 
@@ -75,6 +73,11 @@ public class FrmMain extends javax.swing.JFrame {
         saleMenu.add(newSaleMenuItem);
 
         listSalesMenuItem.setText("Consulta");
+        listSalesMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listSalesMenuItemActionPerformed(evt);
+            }
+        });
         saleMenu.add(listSalesMenuItem);
 
         jMenuBar1.add(saleMenu);
@@ -133,17 +136,6 @@ public class FrmMain extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBar1);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 277, Short.MAX_VALUE)
-        );
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -162,7 +154,8 @@ public class FrmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_productRegisterMenuItemActionPerformed
 
     private void newSaleMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSaleMenuItemActionPerformed
-        
+        SaleEditor editor = new SaleEditor();
+        editor.setVisible(true);
     }//GEN-LAST:event_newSaleMenuItemActionPerformed
 
     private void listProductMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listProductMenuItemActionPerformed
@@ -174,6 +167,10 @@ public class FrmMain extends javax.swing.JFrame {
         editor.setVisible(true);
         editor.setLocationRelativeTo(null);
     }//GEN-LAST:event_clientRegisterMenuItemActionPerformed
+
+    private void listSalesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listSalesMenuItemActionPerformed
+        createSalesPane();
+    }//GEN-LAST:event_listSalesMenuItemActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu clientMenu;
@@ -191,27 +188,56 @@ public class FrmMain extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     
     public void createClientPane(){
+        clearFrame(false);
         if (currentPane == null) {
             currentPane = new JpnClients(new ClientController(null));
-//            currentPane = new JpnClients();
             getContentPane().add(currentPane,BorderLayout.CENTER);
-            getContentPane().revalidate();
+            revalidate();
         }
     }
-    
+
     public void createProductPane(){
+        clearFrame(false);
         if (currentPane == null) {
             currentPane = new JpnProducts(new ProductController(null));
-//            currentPane = new JpnClients();
             getContentPane().add(currentPane,BorderLayout.CENTER);
             getContentPane().revalidate();
         }
     }    
     
-    public void clearFrame(){
-        remove(currentPane);
+    public void createSalesPane(){
+        clearFrame(false);
+        if (currentPane == null) {
+            currentPane = new JpnSales(new SaleController(null));
+            getContentPane().add(currentPane,BorderLayout.CENTER);
+            getContentPane().revalidate();
+        }    
+    }
+    
+    public void clearFrame(boolean createBackground){
+        Component[] components = getContentPane().getComponents();
+        for (Component c : components) {
+            if (c instanceof ImagePanel) {
+                remove(c);
+                break;
+            }   
+            remove(currentPane);
+        }
+        if (createBackground){
+            createBackgroundPane();
+        }
         revalidate();
         repaint();
         currentPane = null;
+    }
+    
+    private void createBackgroundPane() {
+        try {
+            InputStream is = getClass().getResourceAsStream("/content/logo.png");
+            BufferedImage myImage = ImageIO.read(is);
+            getContentPane().add(new ImagePanel(myImage),BorderLayout.CENTER); 
+        } catch (Exception e) {
+            System.out.println("Erro carregando imagem de fundo: "+e);
+        }
     }
 }
