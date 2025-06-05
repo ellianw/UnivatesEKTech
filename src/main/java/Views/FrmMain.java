@@ -47,14 +47,15 @@ public class FrmMain extends javax.swing.JFrame {
 
         jMenuBar1 = new javax.swing.JMenuBar();
         saleMenu = new javax.swing.JMenu();
-        newSaleMenuItem = new javax.swing.JMenuItem();
         listSalesMenuItem = new javax.swing.JMenuItem();
+        newSaleMenuItem = new javax.swing.JMenuItem();
         clientMenu = new javax.swing.JMenu();
         listClientMenuItem = new javax.swing.JMenuItem();
         clientRegisterMenuItem = new javax.swing.JMenuItem();
         productMenu = new javax.swing.JMenu();
         listProductMenuItem = new javax.swing.JMenuItem();
         productRegisterMenuItem = new javax.swing.JMenuItem();
+        reportMenu = new javax.swing.JMenu();
         exitMenu = new javax.swing.JMenu();
         exitMenuItem = new javax.swing.JMenuItem();
 
@@ -64,6 +65,14 @@ public class FrmMain extends javax.swing.JFrame {
 
         saleMenu.setText("Vendas");
 
+        listSalesMenuItem.setText("Listar");
+        listSalesMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listSalesMenuItemActionPerformed(evt);
+            }
+        });
+        saleMenu.add(listSalesMenuItem);
+
         newSaleMenuItem.setText("Nova");
         newSaleMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -71,14 +80,6 @@ public class FrmMain extends javax.swing.JFrame {
             }
         });
         saleMenu.add(newSaleMenuItem);
-
-        listSalesMenuItem.setText("Consulta");
-        listSalesMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                listSalesMenuItemActionPerformed(evt);
-            }
-        });
-        saleMenu.add(listSalesMenuItem);
 
         jMenuBar1.add(saleMenu);
 
@@ -121,6 +122,9 @@ public class FrmMain extends javax.swing.JFrame {
         productMenu.add(productRegisterMenuItem);
 
         jMenuBar1.add(productMenu);
+
+        reportMenu.setText("Relatórios");
+        jMenuBar1.add(reportMenu);
 
         exitMenu.setText("Sair");
 
@@ -184,6 +188,7 @@ public class FrmMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem newSaleMenuItem;
     private javax.swing.JMenu productMenu;
     private javax.swing.JMenuItem productRegisterMenuItem;
+    private javax.swing.JMenu reportMenu;
     private javax.swing.JMenu saleMenu;
     // End of variables declaration//GEN-END:variables
     

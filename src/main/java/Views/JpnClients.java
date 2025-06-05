@@ -7,8 +7,16 @@ package Views;
 import Controllers.ClientController;
 import Entities.Client;
 import Utils.ViewUtils;
+import java.awt.event.ActionEvent;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -25,12 +33,14 @@ public class JpnClients extends javax.swing.JPanel {
         controller = new ClientController();
         controller.setPanel(this);
         initComponents();
+        setMappings();
     }
     
     public JpnClients(ClientController controller) {
         this.controller = controller;
         controller.setPanel(this);
         initComponents();
+        setMappings();
     }
 
     /**
@@ -46,7 +56,7 @@ public class JpnClients extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jTextField1 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        btnSearch = new javax.swing.JButton();
         listPane = new javax.swing.JPanel();
         jspListTable = new javax.swing.JScrollPane();
         jtbList = new javax.swing.JTable();
@@ -65,7 +75,7 @@ public class JpnClients extends javax.swing.JPanel {
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "CPF", "Nome", "Telefone" }));
 
-        jButton3.setText("🔎");
+        btnSearch.setText("🔎");
 
         javax.swing.GroupLayout searchPanelLayout = new javax.swing.GroupLayout(searchPanel);
         searchPanel.setLayout(searchPanelLayout);
@@ -80,7 +90,7 @@ public class JpnClients extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)))
+                        .addComponent(btnSearch)))
                 .addContainerGap())
         );
         searchPanelLayout.setVerticalGroup(
@@ -92,7 +102,7 @@ public class JpnClients extends javax.swing.JPanel {
                 .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3)))
+                    .addComponent(btnSearch)))
         );
 
         add(searchPanel, java.awt.BorderLayout.NORTH);
@@ -120,7 +130,6 @@ public class JpnClients extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jtbList.setColumnSelectionAllowed(true);
         jtbList.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jtbList.setRowSelectionAllowed(true);
         jtbList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -157,6 +166,7 @@ public class JpnClients extends javax.swing.JPanel {
                 btnNewActionPerformed(evt);
             }
         });
+        btnNew.putClientProperty( "FlatLaf.style","borderColor:#357EC7;borderWidth:2");
 
         btnEdit.setText("Editar");
         btnEdit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -173,6 +183,7 @@ public class JpnClients extends javax.swing.JPanel {
                 btnDelActionPerformed(evt);
             }
         });
+        btnDel.putClientProperty( "FlatLaf.style","borderColor:#cf142b;borderWidth:2");
 
         btnExit.setText("Sair");
         btnExit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -279,8 +290,8 @@ public class JpnClients extends javax.swing.JPanel {
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnNew;
     private javax.swing.JPanel btnPanel;
+    private javax.swing.JButton btnSearch;
     private javax.swing.JPanel hintPane;
-    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -299,7 +310,7 @@ public class JpnClients extends javax.swing.JPanel {
     public Integer getClientId() {
         return editingClient == null ? null : editingClient.getId();
     }
-
+    
 //    public JTextComponent getClientCPF() {
 //        return jtfCPF;
 //    }
@@ -323,4 +334,17 @@ public class JpnClients extends javax.swing.JPanel {
 //        jtfName.setText(client.getName());
 //        jtfPhone.setText(client.getPhone());
 //    }
+    private void setMappings() {
+        KeyStroke shortcut = KeyStroke.getKeyStroke("F5");
+        InputMap inputMap = btnSearch.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = btnSearch.getActionMap();
+
+        inputMap.put(shortcut, "clickButton");
+        actionMap.put("clickButton", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnSearch.doClick(); // simula clique
+            }
+        });
+    }
 }

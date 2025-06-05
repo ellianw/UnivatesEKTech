@@ -6,6 +6,14 @@ package Views;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -58,7 +66,7 @@ public class SaleEditor extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        sellDate = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nova venda");
@@ -71,8 +79,6 @@ public class SaleEditor extends javax.swing.JDialog {
                 jComboBox1ActionPerformed(evt);
             }
         });
-
-        jTextField1.setText("jTextField1");
 
         jLabel2.setText("Estoque:");
 
@@ -225,8 +231,18 @@ public class SaleEditor extends javax.swing.JDialog {
 
         jLabel1.setText("Data da venda:");
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
-        jFormattedTextField1.setToolTipText("Utilize alt+clique para adicionar a data de hoje.");
+        sellDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyy"))));
+        sellDate.setToolTipText("Utilize alt+clique para adicionar a data de hoje.");
+        sellDate.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                sellDateMouseClicked(evt);
+            }
+        });
+        sellDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sellDateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -236,7 +252,7 @@ public class SaleEditor extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(sellDate, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 595, Short.MAX_VALUE)
                 .addComponent(jButton2)
                 .addGap(18, 18, 18)
@@ -250,9 +266,11 @@ public class SaleEditor extends javax.swing.JDialog {
                     .addComponent(jButton2)
                     .addComponent(jButton1)
                     .addComponent(jLabel1)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(sellDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 12, Short.MAX_VALUE))
         );
+
+        jButton2.putClientProperty( "FlatLaf.style","borderColor:#7FFF00;background:#D0F0C0;borderWidth:2");
 
         getContentPane().add(jPanel4, java.awt.BorderLayout.SOUTH);
 
@@ -279,6 +297,24 @@ public class SaleEditor extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
+    private void sellDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sellDateActionPerformed
+
+    private void sellDateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sellDateMouseClicked
+        if (evt.isAltDown()) {
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            String dataAtual = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            Date data = null;
+            try {
+                data = dateFormat.parse(dataAtual);
+            } catch (ParseException ex) {
+                Logger.getLogger(SaleEditor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            sellDate.setValue(data);
+        }
+    }//GEN-LAST:event_sellDateMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -288,7 +324,6 @@ public class SaleEditor extends javax.swing.JDialog {
     private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -301,5 +336,6 @@ public class SaleEditor extends javax.swing.JDialog {
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JFormattedTextField sellDate;
     // End of variables declaration//GEN-END:variables
 }

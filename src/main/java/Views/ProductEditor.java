@@ -140,6 +140,8 @@ public class ProductEditor extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
+        btnSaveEdit.putClientProperty( "FlatLaf.style","borderColor:#7FFF00;background:#D0F0C0;borderWidth:2");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(

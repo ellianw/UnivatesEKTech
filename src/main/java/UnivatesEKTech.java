@@ -21,7 +21,7 @@ public class UnivatesEKTech {
             try {
                     // Set System L&F
 //                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            UIManager.setLookAndFeel( new FlatLightLaf() );
+                UIManager.setLookAndFeel( new FlatLightLaf() );
             } 
             catch (UnsupportedLookAndFeelException e) {
                // handle exception

@@ -7,7 +7,13 @@ package Views;
 import Controllers.ProductController;
 import Entities.Product;
 import Utils.ViewUtils;
+import java.awt.event.ActionEvent;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 /**
@@ -25,12 +31,14 @@ public class JpnProducts extends javax.swing.JPanel {
         controller = new ProductController();
         controller.setPanel(this);
         initComponents();
+        setMappings();
     }
     
     public JpnProducts(ProductController controller) {
         this.controller = controller;
         controller.setPanel(this);
         initComponents();
+        setMappings();
     }
 
     /**
@@ -51,7 +59,7 @@ public class JpnProducts extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jTextField1 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        btnSearch = new javax.swing.JButton();
         hintPane = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         listPane = new javax.swing.JPanel();
@@ -69,6 +77,7 @@ public class JpnProducts extends javax.swing.JPanel {
                 btnNewActionPerformed(evt);
             }
         });
+        btnNew.putClientProperty( "FlatLaf.style","borderColor:#357EC7;borderWidth:2");
 
         btnEdit.setText("Editar");
         btnEdit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -85,6 +94,7 @@ public class JpnProducts extends javax.swing.JPanel {
                 btnDelActionPerformed(evt);
             }
         });
+        btnDel.putClientProperty( "FlatLaf.style","borderColor:#cf142b;borderWidth:2");
 
         btnExit.setText("Sair");
         btnExit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -128,7 +138,7 @@ public class JpnProducts extends javax.swing.JPanel {
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Nome" }));
 
-        jButton3.setText("🔎");
+        btnSearch.setText("🔎");
 
         javax.swing.GroupLayout searchPanelLayout = new javax.swing.GroupLayout(searchPanel);
         searchPanel.setLayout(searchPanelLayout);
@@ -143,7 +153,7 @@ public class JpnProducts extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)))
+                        .addComponent(btnSearch)))
                 .addContainerGap())
         );
         searchPanelLayout.setVerticalGroup(
@@ -155,7 +165,7 @@ public class JpnProducts extends javax.swing.JPanel {
                 .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3)))
+                    .addComponent(btnSearch)))
         );
 
         add(searchPanel, java.awt.BorderLayout.NORTH);
@@ -205,13 +215,13 @@ public class JpnProducts extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jtbList.setColumnSelectionAllowed(true);
         jtbList.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jtbList.setRowSelectionAllowed(true);
         jtbList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jtbList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jtbList.setShowHorizontalLines(true);
         jspListTable.setViewportView(jtbList);
+        jtbList.setAutoCreateRowSorter(true);
 
         javax.swing.GroupLayout listPaneLayout = new javax.swing.GroupLayout(listPane);
         listPane.setLayout(listPaneLayout);
@@ -277,8 +287,8 @@ public class JpnProducts extends javax.swing.JPanel {
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnNew;
     private javax.swing.JPanel btnPanel;
+    private javax.swing.JButton btnSearch;
     private javax.swing.JPanel hintPane;
-    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -320,5 +330,19 @@ public class JpnProducts extends javax.swing.JPanel {
 //        jtfEmail.setText(client.getEmail());
 //        jtfName.setText(client.getName());
 //        jtfPhone.setText(client.getPhone());
+    }
+    
+    private void setMappings() {
+        KeyStroke shortcut = KeyStroke.getKeyStroke("F5");
+        InputMap inputMap = btnSearch.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = btnSearch.getActionMap();
+
+        inputMap.put(shortcut, "clickButton");
+        actionMap.put("clickButton", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnSearch.doClick(); // simula clique
+            }
+        });
     }
 }

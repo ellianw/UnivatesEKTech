@@ -9,8 +9,16 @@ import Controllers.ProductController;
 import Controllers.SaleController;
 import Entities.Sale;
 import Utils.ViewUtils;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import static javax.swing.UIManager.put;
 
 /**
  *
@@ -26,12 +34,14 @@ public class JpnSales extends javax.swing.JPanel {
         controller = new SaleController();
         controller.setPanel(this);
         initComponents();
+        setMappings();
     }
     
     public JpnSales(SaleController controller) {
         this.controller = controller;
         controller.setPanel(this);
         initComponents();
+        setMappings();
     }
 
     /**
@@ -54,7 +64,7 @@ public class JpnSales extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jTextField1 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        btnSearch = new javax.swing.JButton();
         listPane = new javax.swing.JPanel();
         jspListTable = new javax.swing.JScrollPane();
         jtbList = new javax.swing.JTable();
@@ -122,6 +132,9 @@ public class JpnSales extends javax.swing.JPanel {
                 .addContainerGap(167, Short.MAX_VALUE))
         );
 
+        btnNew.putClientProperty( "FlatLaf.style","borderColor:#357EC7;borderWidth:2");
+        btnDel.putClientProperty("FlatLaf.style", "borderColor:#cf142b;borderWidth:2");
+
         add(btnPanel, java.awt.BorderLayout.EAST);
 
         jLabel2.setFont(new java.awt.Font("Serif", 2, 12)); // NOI18N
@@ -151,7 +164,12 @@ public class JpnSales extends javax.swing.JPanel {
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Cliente", "Data" }));
 
-        jButton3.setText("🔎");
+        btnSearch.setText("🔎");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout searchPanelLayout = new javax.swing.GroupLayout(searchPanel);
         searchPanel.setLayout(searchPanelLayout);
@@ -166,7 +184,7 @@ public class JpnSales extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)))
+                        .addComponent(btnSearch)))
                 .addContainerGap())
         );
         searchPanelLayout.setVerticalGroup(
@@ -178,7 +196,7 @@ public class JpnSales extends javax.swing.JPanel {
                 .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3)))
+                    .addComponent(btnSearch)))
         );
 
         add(searchPanel, java.awt.BorderLayout.NORTH);
@@ -206,7 +224,7 @@ public class JpnSales extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jtbList.setColumnSelectionAllowed(true);
+        jtbList.setCellSelectionEnabled(false);
         jtbList.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jtbList.setRowSelectionAllowed(true);
         jtbList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -242,7 +260,7 @@ public class JpnSales extends javax.swing.JPanel {
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         Integer id = ViewUtils.getSelectedListItemId(jtbList);
         if (id == null) {
-            JOptionPane.showMessageDialog(null, "Selecione um fornecedor!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Selecione uma venda!", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
         //boolean status = controller.editSupplier(id);
@@ -255,7 +273,7 @@ public class JpnSales extends javax.swing.JPanel {
     private void btnDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelActionPerformed
         Integer id = ViewUtils.getSelectedListItemId(jtbList);
         if (id == null) {
-            JOptionPane.showMessageDialog(null, "Selecione um fornecedor!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Selecione uma venda!", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
         //        boolean status = controller.deleteClient(id);
@@ -264,12 +282,16 @@ public class JpnSales extends javax.swing.JPanel {
             //            return;
             //        }
         //        jtbList.setModel(controller.getFilledTableModel());
-        JOptionPane.showMessageDialog(null, "Fornecedor deletado!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Venda deletada!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
     }//GEN-LAST:event_btnDelActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         exitPanel();
     }//GEN-LAST:event_btnExitActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        JOptionPane.showMessageDialog(null, "Busca realizada!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
+    }//GEN-LAST:event_btnSearchActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -278,8 +300,8 @@ public class JpnSales extends javax.swing.JPanel {
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnNew;
     private javax.swing.JPanel btnPanel;
+    private javax.swing.JButton btnSearch;
     private javax.swing.JPanel hintPane;
-    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -293,5 +315,19 @@ public class JpnSales extends javax.swing.JPanel {
     private void exitPanel(){
         FrmMain parent = (FrmMain)SwingUtilities.getWindowAncestor(this);
         parent.clearFrame(true);
+    }
+    
+    private void setMappings() {
+        KeyStroke shortcut = KeyStroke.getKeyStroke("F5");
+        InputMap inputMap = btnSearch.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = btnSearch.getActionMap();
+
+        inputMap.put(shortcut, "clickButton");
+        actionMap.put("clickButton", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnSearch.doClick(); // simula clique
+            }
+        });
     }
 }
