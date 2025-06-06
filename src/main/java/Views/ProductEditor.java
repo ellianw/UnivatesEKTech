@@ -5,7 +5,12 @@
 package Views;
 
 import Utils.ViewUtils;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
 
 /**
  *
@@ -59,6 +64,7 @@ public class ProductEditor extends javax.swing.JDialog {
         jLabel5.setText("Estoque:");
 
         jtfStock.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        jtfStock.setValue(0.0);
 
         jtfValue.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getCurrencyInstance())));
 
@@ -140,6 +146,9 @@ public class ProductEditor extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
+        jtfValue.setColumns(10);
+        jtfValue.setValue(0.00);
+        jtfValue.setFormatterFactory(getCurrencyFormatter());
         btnSaveEdit.putClientProperty( "FlatLaf.style","borderColor:#7FFF00;background:#D0F0C0;borderWidth:2");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -203,4 +212,18 @@ public class ProductEditor extends javax.swing.JDialog {
     private javax.swing.JFormattedTextField jtfStock;
     private javax.swing.JFormattedTextField jtfValue;
     // End of variables declaration//GEN-END:variables
+
+    public DefaultFormatterFactory getCurrencyFormatter() {
+        DecimalFormat formato = new DecimalFormat("#,##0.00");
+        formato.setGroupingUsed(true); // separador de milhar
+        formato.setRoundingMode(RoundingMode.HALF_UP);
+
+        NumberFormatter formatter = new NumberFormatter(formato);
+        formatter.setValueClass(Double.class);
+        formatter.setAllowsInvalid(false); // impede letras e entrada inválida
+        formatter.setMinimum(0.0); // se quiser restringir a números positivos
+
+        return new DefaultFormatterFactory(formatter);
+
+    }
 }

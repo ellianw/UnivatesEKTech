@@ -158,6 +158,9 @@
             <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
               <Format subtype="1" type="0"/>
             </Property>
+            <Property name="value" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="0.0" type="code"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JFormattedTextField" name="jtfValue">
@@ -166,6 +169,9 @@
               <Format subtype="0" type="4"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jtfValue.setColumns(10);&#xa;jtfValue.setValue(0.00);&#xa;jtfValue.setFormatterFactory(getCurrencyFormatter());"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JButton" name="btnSaveEdit">
           <Properties>
