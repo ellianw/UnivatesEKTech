@@ -277,7 +277,7 @@ public class JpnClients extends javax.swing.JPanel {
 //                return;
 //          }
 //          jtbList.setModel(controller.getFilledTableModel());
-            JOptionPane.showMessageDialog(null, "Fornecedor cliente!", "Sucesso", JOptionPane.PLAIN_MESSAGE);        
+            JOptionPane.showMessageDialog(null, "Cliente deletado!", "Sucesso", JOptionPane.PLAIN_MESSAGE);        
         }
 
     }//GEN-LAST:event_btnDelActionPerformed

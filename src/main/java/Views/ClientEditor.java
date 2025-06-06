@@ -157,7 +157,7 @@ public class ClientEditor extends javax.swing.JDialog {
             //            JOptionPane.showMessageDialog(null, "Erro desconhecido ao salvar fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
             //            return;
             //        }
-        JOptionPane.showMessageDialog(this, "Fornecedor cadastrado!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Cliente cadastrado!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
         //jtbList.setModel(controller.getFilledTableModel());
 //        editingClient=null;
 //        ViewUtils.clearFields(this);
