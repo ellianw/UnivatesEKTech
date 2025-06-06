@@ -7,6 +7,7 @@ package Utils;
 import java.awt.Component;
 import java.awt.Container;
 import javax.swing.JFormattedTextField;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableModel;
@@ -54,5 +55,20 @@ public class ViewUtils {
         TableModel tableModel = table.getModel();
         Integer id = (Integer) tableModel.getValueAt(row, 0);
         return id;
+    }
+
+    public static boolean excludePane() {
+        int resposta = JOptionPane.showConfirmDialog(
+            null,
+            "Tem certeza que deseja excluir este registro?",
+            "Confirmação",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE
+        );
+        
+        if (resposta==JOptionPane.YES_OPTION) {
+            return true;
+        }
+        return false;
     }
 }

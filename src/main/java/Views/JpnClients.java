@@ -254,7 +254,7 @@ public class JpnClients extends javax.swing.JPanel {
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         Integer id = ViewUtils.getSelectedListItemId(jtbList);
         if (id == null) {
-            JOptionPane.showMessageDialog(null, "Selecione um fornecedor!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Selecione um cliente!", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
         //boolean status = controller.editSupplier(id);
@@ -267,16 +267,19 @@ public class JpnClients extends javax.swing.JPanel {
     private void btnDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelActionPerformed
         Integer id = ViewUtils.getSelectedListItemId(jtbList);
         if (id == null) {
-            JOptionPane.showMessageDialog(null, "Selecione um fornecedor!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Selecione um cliente!", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-//        boolean status = controller.deleteClient(id);
-//        if (!status) {
-//            JOptionPane.showMessageDialog(null, "Erro desconhecido ao excluir fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
-//            return;
-//        }
-//        jtbList.setModel(controller.getFilledTableModel());
-        JOptionPane.showMessageDialog(null, "Fornecedor deletado!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
+        if (ViewUtils.excludePane()) {
+//          boolean status = controller.deleteClient(id);
+//          if (!status) {
+//              JOptionPane.showMessageDialog(null, "Erro desconhecido ao excluir fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
+//                return;
+//          }
+//          jtbList.setModel(controller.getFilledTableModel());
+            JOptionPane.showMessageDialog(null, "Fornecedor cliente!", "Sucesso", JOptionPane.PLAIN_MESSAGE);        
+        }
+
     }//GEN-LAST:event_btnDelActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed

@@ -263,6 +263,9 @@ public class JpnSales extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Selecione uma venda!", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        if (ViewUtils.excludePane()) {
+            
+        }        
         //boolean status = controller.editSupplier(id);
         //        if (!status) {
             //            JOptionPane.showMessageDialog(null, "Erro desconhecido ao excluir fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -276,6 +279,7 @@ public class JpnSales extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Selecione uma venda!", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        if (ViewUtils.excludePane()) {
         //        boolean status = controller.deleteClient(id);
         //        if (!status) {
             //            JOptionPane.showMessageDialog(null, "Erro desconhecido ao excluir fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -283,6 +287,7 @@ public class JpnSales extends javax.swing.JPanel {
             //        }
         //        jtbList.setModel(controller.getFilledTableModel());
         JOptionPane.showMessageDialog(null, "Venda deletada!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
+        }
     }//GEN-LAST:event_btnDelActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
