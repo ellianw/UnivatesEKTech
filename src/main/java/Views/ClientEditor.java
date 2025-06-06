@@ -148,7 +148,7 @@ public class ClientEditor extends javax.swing.JDialog {
 
     private void btnSaveEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveEditActionPerformed
         if (ViewUtils.missingField(this)) {
-            JOptionPane.showMessageDialog(null, "Preencha todos os campos!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos!", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
         //        boolean sucess = controller.saveClient();
@@ -157,10 +157,11 @@ public class ClientEditor extends javax.swing.JDialog {
             //            JOptionPane.showMessageDialog(null, "Erro desconhecido ao salvar fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
             //            return;
             //        }
-        JOptionPane.showMessageDialog(null, "Fornecedor cadastrado!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Fornecedor cadastrado!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
         //jtbList.setModel(controller.getFilledTableModel());
 //        editingClient=null;
-        ViewUtils.clearFields(this);
+//        ViewUtils.clearFields(this);
+        dispose();
     }//GEN-LAST:event_btnSaveEditActionPerformed
 
     private void btnExitEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitEditActionPerformed

@@ -4,6 +4,7 @@
  */
 package Views;
 
+import Utils.ViewUtils;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.text.DateFormat;
@@ -14,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -278,11 +280,25 @@ public class SaleEditor extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        if (ViewUtils.missingField(this)) {
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        //        boolean sucess = controller.saveClient();
+        //
+        //        if (!sucess) {
+            //            JOptionPane.showMessageDialog(null, "Erro desconhecido ao salvar fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
+            //            return;
+            //        }
+        JOptionPane.showMessageDialog(this, "Venda realizada!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
+        //jtbList.setModel(controller.getFilledTableModel());
+//        editingClient=null;
+//        ViewUtils.clearFields(this);
+        dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
