@@ -6,7 +6,7 @@ package Controllers;
 
 import DAO.ClientDAO;
 import Entities.Client;
-import Views.JpnClients;
+import Views.Panes.JpnClients;
 import java.sql.Connection;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -36,7 +36,7 @@ public class ClientController {
         List<Client> clientList = null;
         
         try {
-            clientList = dao.findAll();
+            clientList = dao.findAllActive();
         } catch (Exception e) {
             System.out.println("Erro ao buscar clientes: "+e);
         }

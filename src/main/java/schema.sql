@@ -12,7 +12,8 @@ CREATE TABLE client (
     name VARCHAR(255) NOT NULL,
     cpf VARCHAR(14) NOT NULL,
     phone VARCHAR(20),
-    email VARCHAR(255)
+    email VARCHAR(255),
+    active BOOLEAN NOT NULL
 );
 
 CREATE TABLE product (
@@ -20,7 +21,8 @@ CREATE TABLE product (
     name VARCHAR(255) NOT NULL,
     description TEXT,
     value NUMERIC(10, 2) NOT NULL,
-    stock INTEGER NOT NULL
+    stock INTEGER NOT NULL,
+    active BOOLEAN NOT NULL
 );
 
 CREATE TABLE sale (

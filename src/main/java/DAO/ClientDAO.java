@@ -21,7 +21,7 @@ public class ClientDAO {
     }
 
     public void insert(Client client) throws SQLException {
-        String sql = "INSERT INTO client (name, cpf, phone, email) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO client VALUES (default, ?, ?, ?, ?, true)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, client.getName());
             stmt.setString(2, client.getCPF());
@@ -49,9 +49,9 @@ public class ClientDAO {
         return null;
     }
 
-    public List<Client> findAll() throws SQLException {
+    public List<Client> findAllActive() throws SQLException {
         List<Client> clients = new ArrayList<>();
-        String sql = "SELECT * FROM client";
+        String sql = "SELECT * FROM client WHERE active = true";
         try (Statement stmt = conn.createStatement()) {
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
@@ -80,7 +80,7 @@ public class ClientDAO {
     }
 
     public void delete(int id) throws SQLException {
-        String sql = "DELETE FROM client WHERE id = ?";
+        String sql = "UPDATE client SET active = false WHERE id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();

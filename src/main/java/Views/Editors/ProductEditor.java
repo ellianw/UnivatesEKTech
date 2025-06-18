@@ -2,12 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package Views;
+package Views.Editors;
 
+import Controllers.ProductController;
+import Entities.Product;
 import Utils.ViewUtils;
+import Views.Panes.JpnProducts;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
@@ -17,12 +19,25 @@ import javax.swing.text.NumberFormatter;
  * @author Ellian
  */
 public class ProductEditor extends javax.swing.JDialog {
-
+    private ProductController controller;
+    private Product editingProduct;
+    private JpnProducts panel;
+    
     /**
      * Creates new form FrmProductEditor
      */
     public ProductEditor() {
         initComponents();
+    }
+    
+    public ProductEditor(ProductController controller) {
+        this.controller = controller;
+        initComponents();
+    }
+    
+    public ProductEditor(ProductController controller, JpnProducts owner) {
+        this(controller);
+        panel = owner;
     }
 
     /**
@@ -180,18 +195,19 @@ public class ProductEditor extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Preencha todos os campos!", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        //        boolean sucess = controller.saveClient();
-        //
-        //        if (!sucess) {
-            //            JOptionPane.showMessageDialog(null, "Erro desconhecido ao salvar fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
-            //            return;
-            //        }
+        setProduct();
+        boolean sucess = controller.saveProduct(editingProduct);
+
+        if (!sucess) {
+                JOptionPane.showMessageDialog(this, "Erro desconhecido ao salvar fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
         JOptionPane.showMessageDialog(this, "Produto cadastrado!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
-        //jtbList.setModel(controller.getFilledTableModel());
-        //jtpProduct.setSelectedIndex(0);
-        //editingProduct=null;
+        editingProduct=null;
+        if (panel != null) {
+            panel.loadTable();
+        }
         dispose();
-//        ViewUtils.clearFields(this);
     }//GEN-LAST:event_btnSaveEditActionPerformed
 
     private void btnExitEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitEditActionPerformed
@@ -225,6 +241,29 @@ public class ProductEditor extends javax.swing.JDialog {
         formatter.setMinimum(0.0); // se quiser restringir a números positivos
 
         return new DefaultFormatterFactory(formatter);
-
+    }
+    
+    private void setProduct(){
+        if (editingProduct == null) {
+            editingProduct = new Product(null,
+                    jtfName.getText(),
+                    jtfDescription.getText(),
+                    Double.valueOf(jtfValue.getText().replace(",", ".")),
+                    Integer.valueOf(jtfStock.getText())
+            );
+            return;
+        }
+        editingProduct.setName(jtfName.getText());
+        editingProduct.setDescription(jtfDescription.getText());
+        editingProduct.setValue(Double.valueOf(jtfValue.getText().replace(",", ".")));
+        editingProduct.setStock(Integer.valueOf(jtfStock.getText()));
+    }
+    
+    public void fillFields(Product product){
+        editingProduct = product;
+        jtfDescription.setText(editingProduct.getDescription());
+        jtfName.setText(editingProduct.getName());
+        jtfStock.setValue(editingProduct.getStock());
+        jtfValue.setValue(editingProduct.getValue());
     }
 }

@@ -1,9 +1,11 @@
 
+import Database.Database;
 import Views.FrmMain;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -16,29 +18,33 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author Ellian
  */
 public class UnivatesEKTech {
+    private static Database db;
 
     public static void main(String[] args) {
-            try {
-                    // Set System L&F
-//                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                UIManager.setLookAndFeel( new FlatLightLaf() );
-            } 
-            catch (UnsupportedLookAndFeelException e) {
-               // handle exception
-            }
-//            catch (ClassNotFoundException e) {
-//               // handle exception
-//            }
-//            catch (InstantiationException e) {
-//               // handle exception
-//            }
-//            catch (IllegalAccessException e) {
-//               // handle exception
-//            }
-        JFrame frame = new FrmMain();
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setSize((int)Math.round(screenSize.width*0.5), (int) Math.round(screenSize.height*0.5));
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);    
+        try {
+            UIManager.setLookAndFeel( new FlatLightLaf() );
+        } 
+        catch (UnsupportedLookAndFeelException e) {
+            System.out.println("Look and Feel error: "+e);
+        }
+        if (openConnection()) {
+            JFrame frame = new FrmMain(db.getConnection());
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            frame.setSize((int)Math.round(screenSize.width*0.5), (int) Math.round(screenSize.height*0.5));
+            frame.setVisible(true);
+            frame.setLocationRelativeTo(null);              
+        } else {
+            JOptionPane.showMessageDialog(null,"Erro ao conectar no banco de dados!");
+        }
+    }
+    
+    public static boolean openConnection(){
+        db = new Database();
+        try {
+            db.getConnection();
+            return true;
+        } catch (Exception e){
+            return false;
+        }
     }
 }

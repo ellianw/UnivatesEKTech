@@ -2,11 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package Views;
+package Views.Panes;
 
+import Views.Editors.ProductEditor;
 import Controllers.ProductController;
 import Entities.Product;
 import Utils.ViewUtils;
+import Views.FrmMain;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -192,29 +194,7 @@ public class JpnProducts extends javax.swing.JPanel {
 
         add(hintPane, java.awt.BorderLayout.PAGE_END);
 
-        jtbList.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                { new Integer(1), "Processador",  new Double(990.9),  new Double(10.0)}
-            },
-            new String [] {
-                "ID", "Descrição", "Valor", "Estoque"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        jtbList.setModel(controller.getFilledTableModel());
         jtbList.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jtbList.setRowSelectionAllowed(true);
         jtbList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -243,7 +223,7 @@ public class JpnProducts extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-        ProductEditor editor = new ProductEditor();
+        ProductEditor editor = new ProductEditor(controller,this);
         editor.setVisible(true);
         editor.setLocationRelativeTo(null);    
     }//GEN-LAST:event_btnNewActionPerformed
@@ -251,30 +231,30 @@ public class JpnProducts extends javax.swing.JPanel {
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         Integer id = ViewUtils.getSelectedListItemId(jtbList);
         if (id == null) {
-            JOptionPane.showMessageDialog(null, "Selecione um produto!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Selecione um produto!", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        //boolean status = controller.editSupplier(id);
-//        if (!status) {
-//            JOptionPane.showMessageDialog(null, "Erro desconhecido ao excluir fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
-//            return;
-//        }
+        boolean status = controller.editProduct(id,this);
+        if (!status) {
+            JOptionPane.showMessageDialog(null, "Erro desconhecido ao excluir fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelActionPerformed
         Integer id = ViewUtils.getSelectedListItemId(jtbList);
         if (id == null) {
-            JOptionPane.showMessageDialog(null, "Selecione um produto!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Selecione um produto!", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
         if (ViewUtils.excludePane()) {
-    //        boolean status = controller.deleteClient(id);
-    //        if (!status) {
-    //            JOptionPane.showMessageDialog(null, "Erro desconhecido ao excluir fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
-    //            return;
-    //        }
-    //        jtbList.setModel(controller.getFilledTableModel());
-            JOptionPane.showMessageDialog(null, "produto deletado!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
+            boolean status = controller.deleteProduct(id);
+            if (!status) {
+                JOptionPane.showMessageDialog(this, "Erro desconhecido ao excluir fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            loadTable();
+            JOptionPane.showMessageDialog(this, "produto deletado!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
         }
     }//GEN-LAST:event_btnDelActionPerformed
 
@@ -309,22 +289,6 @@ public class JpnProducts extends javax.swing.JPanel {
     public Integer getClientId() {
         return editingProduct == null ? null : editingProduct.getId();
     }
-
-//    public JTextComponent getClientCPF() {
-//        return jtfStock;
-//    }
-//
-//    public JTextComponent getClientEmail() {
-//        return jtfDescription;
-//    }
-//
-//    public JTextComponent getClientName() {
-//        return jtfName;
-//    }
-//
-//    public JTextComponent getClientPhone() {
-//        return jtfValue;
-//    }
         
     public void setEditingProduct(Product product) {
         editingProduct = product;
@@ -346,5 +310,9 @@ public class JpnProducts extends javax.swing.JPanel {
                 btnSearch.doClick(); // simula clique
             }
         });
+    }
+    
+    public void loadTable() {
+        jtbList.setModel(controller.getFilledTableModel());
     }
 }

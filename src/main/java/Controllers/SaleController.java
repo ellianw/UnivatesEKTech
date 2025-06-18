@@ -5,7 +5,7 @@
 package Controllers;
 
 import DAO.SaleDAO;
-import Views.JpnSales;
+import Views.Panes.JpnSales;
 import java.sql.Connection;
 import javax.swing.table.DefaultTableModel;
 

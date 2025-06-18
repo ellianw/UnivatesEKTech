@@ -4,11 +4,12 @@
  */
 package Controllers;
 
-import DAO.ClientDAO;
 import DAO.ProductDAO;
 import Entities.Product;
-import Views.JpnProducts;
+import Views.Editors.ProductEditor;
+import Views.Panes.JpnProducts;
 import java.sql.Connection;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -33,52 +34,47 @@ public class ProductController {
     public DefaultTableModel getFilledTableModel() {
         String[] colunas = { "ID", "Nome", "Descrição", "Valor","Estoque" };
         DefaultTableModel tableModel = new DefaultTableModel(colunas,0);
-//        List<Client> clientList = null;
-//        
-//        try {
-//            clientList = dao.findAll();
-//        } catch (Exception e) {
-//            System.out.println("Erro ao buscar clientes: "+e);
-//        }
-//
-//        if (clientList == null ) return tableModel;
-//        
-//        for (Client s : clientList) {
-//            Object[] linha = {
-//                s.getId(),
-//                s.getName(),
-//                s.getEmail(),
-//                s.getPhone(),
-//                s.getCPF()
-//            };
-//            tableModel.addRow(linha);
-//        }
+        List<Product> productList = null;
+        
+        try {
+            productList = dao.findAllActive();
+        } catch (Exception e) {
+            System.out.println("Erro ao buscar clientes: "+e);
+            e.printStackTrace();
+        }
+
+        if (productList == null ) return tableModel;
+        
+        for (Product p : productList) {
+            Object[] linha = {
+                p.getId(),
+                p.getName(),
+                p.getDescription(),
+                p.getValue(),
+                p.getStock()
+            };
+            tableModel.addRow(linha);
+        }
         
         return tableModel;
     }
     
-    public boolean saveClient() {
-       
-//        Client editingClient = new Client(panel.getClientId(),
-//                panel.getClientName().getText().trim(),
-//                panel.getClientEmail().getText().trim(),
-//                panel.getClientPhone().getText().trim(),
-//                panel.getClientCPF().getText().trim());
-//        try {
-//            if (editingClient.getId() == null) {
-//                dao.insert(editingClient);
-//            } else {
-//                dao.update(editingClient);
-//            }
-//        } catch (Exception e) {
-//            System.out.println("SQL error while inserting or updating clients: "+e);
-//            return false;
-//        }
+    public boolean saveProduct(Product product) {
+        try {
+            if (product.getId() == null) {
+                dao.insert(product);
+            } else {
+                dao.update(product);
+            }
+        } catch (Exception e) {
+            System.out.println("SQL error while inserting or updating clients: "+e);
+            return false;
+        }
         
         return true;
     }
     
-    public boolean deleteClient(Integer id) {
+    public boolean deleteProduct(Integer id) {
         try {
             dao.delete(id);
         } catch (Exception e) {
@@ -88,10 +84,13 @@ public class ProductController {
         return true;
     }
     
-    public boolean editClient(Integer id) {
+    public boolean editProduct(Integer id,JpnProducts panel) {
         try {
             Product product = dao.findById(id);
-            panel.setEditingProduct(product);
+            ProductEditor editor = new ProductEditor(this,panel);
+            editor.setLocationRelativeTo(null);
+            editor.fillFields(product);
+            editor.setVisible(true);
         } catch (Exception e) {
             System.out.println("SQL error while editing client: "+e);
             return false;

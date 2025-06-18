@@ -21,13 +21,14 @@ public class ProductDAO {
     }
 
     public void insert(Product product) throws SQLException {
-        String sql = "INSERT INTO product (name, description, value, stock) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO product VALUES (default, ?, ?, ?, ?, true)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, product.getName());
             stmt.setString(2, product.getDescription());
             stmt.setDouble(3, product.getValue());
             stmt.setInt(4, product.getStock());
             stmt.executeUpdate();
+            System.out.println("SQL: "+stmt.toString());
         }
     }
 
@@ -49,9 +50,9 @@ public class ProductDAO {
         return null;
     }
 
-    public List<Product> findAll() throws SQLException {
+    public List<Product> findAllActive() throws SQLException {
         List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM product";
+        String sql = "SELECT * FROM product WHERE active = true";
         try (Statement stmt = conn.createStatement()) {
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {

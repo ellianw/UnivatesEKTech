@@ -2,13 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package Views;
+package Views.Panes;
 
 
+import Views.Editors.ProductEditor;
 import Controllers.ProductController;
 import Controllers.SaleController;
 import Entities.Sale;
 import Utils.ViewUtils;
+import Views.FrmMain;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
@@ -224,7 +226,6 @@ public class JpnSales extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jtbList.setCellSelectionEnabled(false);
         jtbList.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jtbList.setRowSelectionAllowed(true);
         jtbList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);

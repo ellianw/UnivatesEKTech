@@ -12,7 +12,7 @@ public class Database {
         try {
             // Load prop file data
             Properties prop = new Properties();
-            prop.load(getClass().getResourceAsStream("db.properties"));
+            prop.load(getClass().getResourceAsStream("/properties/db.properties"));
             
             String dbdriver = prop.getProperty("db.driver");
             String dburl = prop.getProperty("db.url");

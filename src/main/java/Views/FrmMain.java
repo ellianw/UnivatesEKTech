@@ -4,6 +4,13 @@
  */
 package Views;
 
+import Views.Panes.JpnClients;
+import Views.Panes.JpnSales;
+import Views.Panes.JpnProducts;
+import Views.Panes.ImagePanel;
+import Views.Editors.SaleEditor;
+import Views.Editors.ClientEditor;
+import Views.Editors.ProductEditor;
 import Controllers.ClientController;
 import Controllers.ProductController;
 import Controllers.SaleController;
@@ -25,15 +32,20 @@ public class FrmMain extends javax.swing.JFrame {
     /**
      * Creates new form FrmMain
      */
-    public FrmMain() {
+    public FrmMain(Connection conn) {
         initComponents();
         setLayout(new BorderLayout());   
         createBackgroundPane();
+        this.conn = conn;
         try {
             setIconImage(ImageIO.read(getClass().getResource("/content/icon.png")));
         } catch (Exception e) {
             System.out.println("Error loading frame icon: "+e);
         }
+    }
+    
+    public FrmMain() {
+        this(null);
     }
 
     /**
@@ -152,7 +164,7 @@ public class FrmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_listClientMenuItemActionPerformed
 
     private void productRegisterMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productRegisterMenuItemActionPerformed
-        ProductEditor editor = new ProductEditor();
+        ProductEditor editor = new ProductEditor(new ProductController(conn));
         editor.setVisible(true);
         editor.setLocationRelativeTo(null);    
     }//GEN-LAST:event_productRegisterMenuItemActionPerformed
@@ -204,7 +216,7 @@ public class FrmMain extends javax.swing.JFrame {
     public void createProductPane(){
         clearFrame(false);
         if (currentPane == null) {
-            currentPane = new JpnProducts(new ProductController(null));
+            currentPane = new JpnProducts(new ProductController(conn));
             getContentPane().add(currentPane,BorderLayout.CENTER);
             getContentPane().revalidate();
         }
