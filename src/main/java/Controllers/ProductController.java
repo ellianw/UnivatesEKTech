@@ -31,13 +31,22 @@ public class ProductController {
         this.panel = panel;
     }
     
-    public DefaultTableModel getFilledTableModel() {
+    public DefaultTableModel getFilledTableModel(JpnProducts panel) {
+        return getFilledTableModel(panel, false);
+    }
+    
+    public DefaultTableModel getFilledTableModel(JpnProducts panel, boolean conditioned) {
         String[] colunas = { "ID", "Nome", "Descrição", "Valor","Estoque" };
         DefaultTableModel tableModel = new DefaultTableModel(colunas,0);
         List<Product> productList = null;
         
+        String whereClause = "";
+        
         try {
-            productList = dao.findAllActive();
+            if (conditioned) {
+                whereClause = getWhereClause(panel);
+            }
+            productList = dao.findAllActive(whereClause);
         } catch (Exception e) {
             System.out.println("Erro ao buscar clientes: "+e);
             e.printStackTrace();
@@ -96,5 +105,18 @@ public class ProductController {
             return false;
         }
         return true;
+    }
+    
+    private String getWhereClause(JpnProducts panel) {
+        String clause = null;
+        String[] parameters = panel.getSearchParameters();
+        String column = parameters[0].toLowerCase();
+        String value = parameters[1].toLowerCase();
+        if ("id".equals(column) && !value.isBlank()) {
+            clause = "id = "+value;
+        } else if (!value.isBlank()){
+            clause = "name like '%"+value+"%'";
+        }
+        return clause;
     }
 }

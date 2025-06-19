@@ -59,8 +59,8 @@ public class JpnProducts extends javax.swing.JPanel {
         btnExit = new javax.swing.JButton();
         searchPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
+        searchVar = new javax.swing.JComboBox<>();
+        searchField = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
         hintPane = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -138,9 +138,14 @@ public class JpnProducts extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel1.setText("Produtos:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Nome" }));
+        searchVar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Nome" }));
 
         btnSearch.setText("🔎");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout searchPanelLayout = new javax.swing.GroupLayout(searchPanel);
         searchPanel.setLayout(searchPanelLayout);
@@ -151,9 +156,9 @@ public class JpnProducts extends javax.swing.JPanel {
                 .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(searchPanelLayout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(searchVar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1)
+                        .addComponent(searchField)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSearch)))
                 .addContainerGap())
@@ -165,8 +170,8 @@ public class JpnProducts extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchVar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSearch)))
         );
 
@@ -194,7 +199,7 @@ public class JpnProducts extends javax.swing.JPanel {
 
         add(hintPane, java.awt.BorderLayout.PAGE_END);
 
-        jtbList.setModel(controller.getFilledTableModel());
+        jtbList.setModel(controller.getFilledTableModel(this));
         jtbList.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jtbList.setRowSelectionAllowed(true);
         jtbList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -254,13 +259,17 @@ public class JpnProducts extends javax.swing.JPanel {
                 return;
             }
             loadTable();
-            JOptionPane.showMessageDialog(this, "produto deletado!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Produto deletado!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
         }
     }//GEN-LAST:event_btnDelActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         exitPanel();
     }//GEN-LAST:event_btnExitActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        jtbList.setModel(controller.getFilledTableModel(this,true));
+    }//GEN-LAST:event_btnSearchActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -271,14 +280,14 @@ public class JpnProducts extends javax.swing.JPanel {
     private javax.swing.JPanel btnPanel;
     private javax.swing.JButton btnSearch;
     private javax.swing.JPanel hintPane;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JScrollPane jspListTable;
     private javax.swing.JTable jtbList;
     private javax.swing.JPanel listPane;
+    private javax.swing.JTextField searchField;
     private javax.swing.JPanel searchPanel;
+    private javax.swing.JComboBox<String> searchVar;
     // End of variables declaration//GEN-END:variables
  
     private void exitPanel(){
@@ -292,10 +301,6 @@ public class JpnProducts extends javax.swing.JPanel {
         
     public void setEditingProduct(Product product) {
         editingProduct = product;
-//        jtfCPF.setText(client.getCPF());
-//        jtfEmail.setText(client.getEmail());
-//        jtfName.setText(client.getName());
-//        jtfPhone.setText(client.getPhone());
     }
     
     private void setMappings() {
@@ -313,6 +318,13 @@ public class JpnProducts extends javax.swing.JPanel {
     }
     
     public void loadTable() {
-        jtbList.setModel(controller.getFilledTableModel());
+        jtbList.setModel(controller.getFilledTableModel(this));
+    }
+    
+    public String[] getSearchParameters(){
+        String[] output = new String[2];
+        output[0] = searchVar.getSelectedItem().toString();
+        output[1] = searchField.getText().toString();
+        return output;
     }
 }

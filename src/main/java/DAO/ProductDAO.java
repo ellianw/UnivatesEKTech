@@ -28,7 +28,7 @@ public class ProductDAO {
             stmt.setDouble(3, product.getValue());
             stmt.setInt(4, product.getStock());
             stmt.executeUpdate();
-            System.out.println("SQL: "+stmt.toString());
+            System.out.println(stmt.toString());
         }
     }
 
@@ -49,10 +49,18 @@ public class ProductDAO {
         }
         return null;
     }
-
+    
     public List<Product> findAllActive() throws SQLException {
+        return findAllActive(null);
+    }
+
+    public List<Product> findAllActive(String whereClause) throws SQLException {
         List<Product> products = new ArrayList<>();
         String sql = "SELECT * FROM product WHERE active = true";
+        if (whereClause!=null && !whereClause.isBlank()) {
+            sql+=" AND "+whereClause;
+        }
+        System.out.println(sql);        
         try (Statement stmt = conn.createStatement()) {
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
