@@ -6,7 +6,6 @@ package Views.Panes;
 
 import Views.Editors.ProductEditor;
 import Controllers.ProductController;
-import Entities.ApplicationContext;
 import Entities.Product;
 import Utils.ViewUtils;
 import Views.FrmMain;
@@ -24,21 +23,25 @@ import javax.swing.SwingUtilities;
  * @author Ellian
  */
 public class JpnProducts extends javax.swing.JPanel {
-    private ApplicationContext context;
-    private ProductController controller;
-    private Product editingProduct;
+    private ProductController controller = null;
+    private Product editingProduct = null;
     
     /**
      * Creates new form JpnSuppliers
      */
     public JpnProducts() {
-        context = ApplicationContext.getInstance(); 
-        context.setActivePanel(this);
-        controller = context.getProductController();
+        controller = new ProductController();
+        controller.setPanel(this);
         initComponents();
         setMappings();
     }
-   
+    
+    public JpnProducts(ProductController controller) {
+        this.controller = controller;
+        controller.setPanel(this);
+        initComponents();
+        setMappings();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -196,7 +199,7 @@ public class JpnProducts extends javax.swing.JPanel {
 
         add(hintPane, java.awt.BorderLayout.PAGE_END);
 
-        jtbList.setModel(controller.getFilledTableModel());
+        jtbList.setModel(controller.getFilledTableModel(this));
         jtbList.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jtbList.setRowSelectionAllowed(true);
         jtbList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -225,7 +228,7 @@ public class JpnProducts extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-        ProductEditor editor = new ProductEditor();
+        ProductEditor editor = new ProductEditor(controller,this);
         editor.setVisible(true);
         editor.setLocationRelativeTo(null);    
     }//GEN-LAST:event_btnNewActionPerformed
@@ -236,7 +239,7 @@ public class JpnProducts extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Selecione um produto!", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        boolean status = controller.editProduct(id);
+        boolean status = controller.editProduct(id,this);
         if (!status) {
             JOptionPane.showMessageDialog(null, "Erro desconhecido ao excluir fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
@@ -265,7 +268,7 @@ public class JpnProducts extends javax.swing.JPanel {
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        jtbList.setModel(controller.getFilledTableModel(true));
+        jtbList.setModel(controller.getFilledTableModel(this,true));
     }//GEN-LAST:event_btnSearchActionPerformed
 
 
@@ -315,7 +318,7 @@ public class JpnProducts extends javax.swing.JPanel {
     }
     
     public void loadTable() {
-        jtbList.setModel(controller.getFilledTableModel());
+        jtbList.setModel(controller.getFilledTableModel(this));
     }
     
     public String[] getSearchParameters(){

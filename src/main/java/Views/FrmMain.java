@@ -12,8 +12,8 @@ import Views.Editors.SaleEditor;
 import Views.Editors.ClientEditor;
 import Views.Editors.ProductEditor;
 import Controllers.ClientController;
+import Controllers.ProductController;
 import Controllers.SaleController;
-import Entities.ApplicationContext;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.image.BufferedImage;
@@ -28,20 +28,25 @@ import javax.swing.JPanel;
  */
 public class FrmMain extends javax.swing.JFrame {
     private JPanel currentPane = null;
+    private Connection conn = null;
     /**
      * Creates new form FrmMain
      */
-    public FrmMain() {
+    public FrmMain(Connection conn) {
         initComponents();
         setLayout(new BorderLayout());   
         createBackgroundPane();
+        this.conn = conn;
         try {
             setIconImage(ImageIO.read(getClass().getResource("/content/icon.png")));
         } catch (Exception e) {
             System.out.println("Error loading frame icon: "+e);
         }
     }
-
+    
+    public FrmMain() {
+        this(null);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -159,7 +164,7 @@ public class FrmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_listClientMenuItemActionPerformed
 
     private void productRegisterMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productRegisterMenuItemActionPerformed
-        ProductEditor editor = new ProductEditor();
+        ProductEditor editor = new ProductEditor(new ProductController(conn));
         editor.setVisible(true);
         editor.setLocationRelativeTo(null);    
     }//GEN-LAST:event_productRegisterMenuItemActionPerformed
@@ -211,7 +216,7 @@ public class FrmMain extends javax.swing.JFrame {
     public void createProductPane(){
         clearFrame(false);
         if (currentPane == null) {
-            currentPane = new JpnProducts();
+            currentPane = new JpnProducts(new ProductController(conn));
             getContentPane().add(currentPane,BorderLayout.CENTER);
             getContentPane().revalidate();
         }
