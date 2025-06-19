@@ -117,7 +117,9 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="144" max="32767" attributes="0"/>
+                  <EmptySpace pref="64" max="32767" attributes="0"/>
+                  <Component id="activeUser" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -125,7 +127,10 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="activeUser" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -138,6 +143,11 @@
               <Font name="Serif" size="12" style="2"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Dica: Utilize F5 como atalho para o bot&#xe3;o de busca."/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="activeUser">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Usu&#xe1;rio ativo:"/>
           </Properties>
         </Component>
       </SubComponents>

@@ -6,6 +6,7 @@ package Entities;
 
 import Controllers.ClientController;
 import Controllers.ProductController;
+import Controllers.SecurityController;
 import java.sql.Connection;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -23,7 +24,10 @@ public class ApplicationContext {
     private JDialog activeEditor;
     private ClientController clientController;
     private ProductController productController;
-
+    private SecurityController securityController;
+    
+    private User activeUser;
+    
     private ApplicationContext(){
     
     };
@@ -76,6 +80,21 @@ public class ApplicationContext {
 
     public void setProductController(ProductController productController) {
         this.productController = productController;
+    }
+
+    public SecurityController getSecurityController() {
+        if (securityController == null) {
+            securityController = new SecurityController();
+        }
+        return securityController;
+    }
+
+    public User getActiveUser() {
+        return activeUser;
+    }
+
+    public void setActiveUser(User activeUser) {
+        this.activeUser = activeUser;
     }
     
     

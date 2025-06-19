@@ -31,15 +31,24 @@ public class UnivatesEKTech {
         catch (UnsupportedLookAndFeelException e) {
             System.out.println("Look and Feel error: "+e);
         }
-        if (openConnection()) {
-            JFrame frame = new FrmMain();
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            frame.setSize((int)Math.round(screenSize.width*0.5), (int) Math.round(screenSize.height*0.5));
-            frame.setVisible(true);
-            frame.setLocationRelativeTo(null);              
-        } else {
+        if (!openConnection()) {
             JOptionPane.showMessageDialog(null,"Erro ao conectar no banco de dados!");
+            return;          
         }
+        
+        LoginDialog login = new LoginDialog(null, true);
+        login.setResizable(false);
+        login.setLocationRelativeTo(null);
+        login.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        login.setVisible(true);
+        
+        if (ApplicationContext.getInstance().getActiveUser()==null) return;
+
+        JFrame frame = new FrmMain();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setSize((int)Math.round(screenSize.width*0.5), (int) Math.round(screenSize.height*0.5));
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);    
     }
     
     public static boolean openConnection(){

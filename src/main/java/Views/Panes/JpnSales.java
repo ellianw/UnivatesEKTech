@@ -6,13 +6,11 @@ package Views.Panes;
 
 
 import Views.Editors.ProductEditor;
-import Controllers.ProductController;
 import Controllers.SaleController;
 import Entities.Sale;
 import Utils.ViewUtils;
 import Views.FrmMain;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -20,7 +18,6 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import static javax.swing.UIManager.put;
 
 /**
  *
@@ -62,6 +59,7 @@ public class JpnSales extends javax.swing.JPanel {
         btnExit = new javax.swing.JButton();
         hintPane = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        activeUser = new javax.swing.JLabel();
         searchPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
@@ -142,6 +140,8 @@ public class JpnSales extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Serif", 2, 12)); // NOI18N
         jLabel2.setText("Dica: Utilize F5 como atalho para o botão de busca.");
 
+        activeUser.setText("Usuário ativo:");
+
         javax.swing.GroupLayout hintPaneLayout = new javax.swing.GroupLayout(hintPane);
         hintPane.setLayout(hintPaneLayout);
         hintPaneLayout.setHorizontalGroup(
@@ -149,13 +149,17 @@ public class JpnSales extends javax.swing.JPanel {
             .addGroup(hintPaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addContainerGap(144, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                .addComponent(activeUser)
+                .addContainerGap())
         );
         hintPaneLayout.setVerticalGroup(
             hintPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(hintPaneLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2)
+                .addGroup(hintPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(activeUser))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -301,6 +305,7 @@ public class JpnSales extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel activeUser;
     private javax.swing.JButton btnDel;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnExit;
