@@ -27,14 +27,27 @@ CREATE TABLE product (
 
 CREATE TABLE sale (
     id SERIAL PRIMARY KEY,
-    client_id INTEGER NOT NULL,
+    ref_client INTEGER NOT NULL,
+    ref_user INTEGER NOT NULL,
     date DATE NOT NULL
 );
 
 CREATE TABLE sale_product (
-    sale_id INTEGER NOT NULL,
-    product_id INTEGER NOT NULL,
+    ref_sale INTEGER NOT NULL,
+    ref_product INTEGER NOT NULL,
     quantity INTEGER NOT NULL,
     product_value NUMERIC(10, 2) NOT NULL,
-    PRIMARY KEY (sale_id, product_id)
+    PRIMARY KEY (ref_sale, ref_product)
 );
+
+CREATE TABLE users (
+    id SERIAL NOT NULL,
+    login VARCHAR(40) NOT NULL,
+    name VARCHAR(160) NOT NULL,
+    password VARCHAR(1028) NOT NULL,
+    privilege INTEGER NOT NULL,
+    active BOOLEAN NOT NULL
+);
+
+INSERT INTO users VALUES (DEFAULT, 'ellian', 'Ellian Wolfart', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',1,true); -- Default password = 123
+INSERT INTO users VALUES (DEFAULT, 'karen', 'Karen Drus', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',1,true); -- Default password = 123
