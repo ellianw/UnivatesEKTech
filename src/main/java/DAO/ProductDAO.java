@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import Entities.ApplicationContext;
 import Entities.Product;
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,9 +16,9 @@ import java.util.List;
  */
 public class ProductDAO {
     private Connection conn;
-
-    public ProductDAO(Connection conn) {
-        this.conn = conn;
+    
+    public ProductDAO() {
+        conn = ApplicationContext.getInstance().getConnection();
     }
 
     public void insert(Product product) throws SQLException {

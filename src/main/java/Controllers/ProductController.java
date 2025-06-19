@@ -5,6 +5,7 @@
 package Controllers;
 
 import DAO.ProductDAO;
+import Entities.ApplicationContext;
 import Entities.Product;
 import Views.Editors.ProductEditor;
 import Views.Panes.JpnProducts;
@@ -21,21 +22,25 @@ public class ProductController {
     private JpnProducts panel = null;
 
     public ProductController(Connection conn) {
-        dao = new ProductDAO(conn);
+//        dao = new ProductDAO(ApplicationContext.getInstance().getConnection());
     }
 
     public ProductController() {
+        dao = new ProductDAO();
+        if (ApplicationContext.getInstance().getActivePanel() instanceof JpnProducts jpnProducts) {
+            panel = jpnProducts;
+        }
     }    
     
     public void setPanel(JpnProducts panel) {
         this.panel = panel;
     }
     
-    public DefaultTableModel getFilledTableModel(JpnProducts panel) {
-        return getFilledTableModel(panel, false);
+    public DefaultTableModel getFilledTableModel() {
+        return getFilledTableModel(false);
     }
     
-    public DefaultTableModel getFilledTableModel(JpnProducts panel, boolean conditioned) {
+    public DefaultTableModel getFilledTableModel(boolean conditioned) {
         String[] colunas = { "ID", "Nome", "Descrição", "Valor","Estoque" };
         DefaultTableModel tableModel = new DefaultTableModel(colunas,0);
         List<Product> productList = null;
@@ -44,7 +49,7 @@ public class ProductController {
         
         try {
             if (conditioned) {
-                whereClause = getWhereClause(panel);
+                whereClause = getWhereClause();
             }
             productList = dao.findAllActive(whereClause);
         } catch (Exception e) {
@@ -93,10 +98,10 @@ public class ProductController {
         return true;
     }
     
-    public boolean editProduct(Integer id,JpnProducts panel) {
+    public boolean editProduct(Integer id) {
         try {
             Product product = dao.findById(id);
-            ProductEditor editor = new ProductEditor(this,panel);
+            ProductEditor editor = new ProductEditor();
             editor.setLocationRelativeTo(null);
             editor.fillFields(product);
             editor.setVisible(true);
@@ -107,7 +112,7 @@ public class ProductController {
         return true;
     }
     
-    private String getWhereClause(JpnProducts panel) {
+    private String getWhereClause() {
         String clause = null;
         String[] parameters = panel.getSearchParameters();
         String column = parameters[0].toLowerCase();
