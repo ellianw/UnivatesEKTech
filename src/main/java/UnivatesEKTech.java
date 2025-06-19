@@ -1,9 +1,12 @@
 
 import Database.Database;
+import Entities.ApplicationContext;
 import Views.FrmMain;
+import Views.LoginDialog;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -21,6 +24,7 @@ public class UnivatesEKTech {
     private static Database db;
 
     public static void main(String[] args) {
+        
         try {
             UIManager.setLookAndFeel( new FlatLightLaf() );
         } 
@@ -28,7 +32,7 @@ public class UnivatesEKTech {
             System.out.println("Look and Feel error: "+e);
         }
         if (openConnection()) {
-            JFrame frame = new FrmMain(db.getConnection());
+            JFrame frame = new FrmMain();
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             frame.setSize((int)Math.round(screenSize.width*0.5), (int) Math.round(screenSize.height*0.5));
             frame.setVisible(true);
@@ -41,7 +45,7 @@ public class UnivatesEKTech {
     public static boolean openConnection(){
         db = new Database();
         try {
-            db.getConnection();
+            ApplicationContext.getInstance().setConnection(db.getConnection());
             return true;
         } catch (Exception e){
             return false;
