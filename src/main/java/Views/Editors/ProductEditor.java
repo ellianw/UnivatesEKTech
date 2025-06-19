@@ -5,12 +5,15 @@
 package Views.Editors;
 
 import Controllers.ProductController;
+import Entities.ApplicationContext;
 import Entities.Product;
+import Utils.TextUtils;
 import Utils.ViewUtils;
 import Views.Panes.JpnProducts;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 
@@ -19,6 +22,7 @@ import javax.swing.text.NumberFormatter;
  * @author Ellian
  */
 public class ProductEditor extends javax.swing.JDialog {
+    private ApplicationContext context;
     private ProductController controller;
     private Product editingProduct;
     private JpnProducts panel;
@@ -28,17 +32,22 @@ public class ProductEditor extends javax.swing.JDialog {
      */
     public ProductEditor() {
         initComponents();
+        context = ApplicationContext.getInstance();
+        controller = context.getProductController();
+        if (context.getActivePanel() instanceof JpnProducts) {
+            panel = (JpnProducts)context.getActivePanel();
+        }
     }
     
-    public ProductEditor(ProductController controller) {
-        this.controller = controller;
-        initComponents();
-    }
-    
-    public ProductEditor(ProductController controller, JpnProducts owner) {
-        this(controller);
-        panel = owner;
-    }
+//    public ProductEditor(ProductController controller) {
+//        this.controller = controller;
+//        initComponents();
+//    }
+//    
+//    public ProductEditor(ProductController controller, JpnProducts owner) {
+//        this(controller);
+//        panel = owner;
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -248,14 +257,14 @@ public class ProductEditor extends javax.swing.JDialog {
             editingProduct = new Product(null,
                     jtfName.getText(),
                     jtfDescription.getText(),
-                    Double.valueOf(jtfValue.getText().replace(",", ".")),
+                    Double.valueOf(TextUtils.parseDouble(jtfValue.getText())),
                     Integer.valueOf(jtfStock.getText())
             );
             return;
         }
         editingProduct.setName(jtfName.getText());
         editingProduct.setDescription(jtfDescription.getText());
-        editingProduct.setValue(Double.valueOf(jtfValue.getText().replace(",", ".")));
+        editingProduct.setValue(TextUtils.parseDouble(jtfValue.getText()));
         editingProduct.setStock(Integer.valueOf(jtfStock.getText()));
     }
     
