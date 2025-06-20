@@ -43,8 +43,13 @@ public class ClientController {
         DefaultTableModel tableModel = new DefaultTableModel(colunas,0);
         List<Client> clientList = null;
         
+        String whereClause = "";
+        
         try {
-            clientList = dao.findAllActive();
+            if (conditioned) {
+                whereClause = getWhereClause();
+            }
+            clientList = dao.findAllActive(whereClause);
         } catch (Exception e) {
             System.out.println("Erro ao buscar clientes: "+e);
         }
@@ -102,5 +107,18 @@ public class ClientController {
             return false;
         }
         return true;
+    }
+    
+    private String getWhereClause() {
+        String clause = null;
+        String[] parameters = panel.getSearchParameters();
+        String column = parameters[0].toLowerCase();
+        String value = parameters[1].toLowerCase();
+        if ("id".equals(column) && !value.isBlank()) {
+            clause = "id = "+value;
+        } else if (!value.isBlank()){
+            clause = "name like '%"+value+"%'";
+        }
+        return clause;
     }
 }

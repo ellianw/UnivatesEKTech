@@ -50,9 +50,13 @@ public class ClientDAO {
         return null;
     }
 
-    public List<Client> findAllActive() throws SQLException {
+    public List<Client> findAllActive(String whereClause) throws SQLException {
         List<Client> clients = new ArrayList<>();
         String sql = "SELECT * FROM client WHERE active = true";
+        if (whereClause!=null && !whereClause.isBlank()) {
+            sql+=" AND "+whereClause;
+        }
+        System.out.println(sql);           
         try (Statement stmt = conn.createStatement()) {
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {

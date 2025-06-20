@@ -70,9 +70,14 @@ public class JpnClients extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel1.setText("Clientes:");
 
-        searchVar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "CPF", "Nome", "Telefone" }));
+        searchVar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Nome" }));
 
         btnSearch.setText("🔎");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout searchPanelLayout = new javax.swing.GroupLayout(searchPanel);
         searchPanel.setLayout(searchPanelLayout);
@@ -265,6 +270,10 @@ public class JpnClients extends javax.swing.JPanel {
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         exitPanel();
     }//GEN-LAST:event_btnExitActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        jtbList.setModel(controller.getFilledTableModel(true));
+    }//GEN-LAST:event_btnSearchActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
