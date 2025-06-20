@@ -101,7 +101,7 @@ public class ProductController {
     public boolean editProduct(Integer id) {
         try {
             Product product = dao.findById(id);
-            ProductEditor editor = new ProductEditor();
+            ProductEditor editor = new ProductEditor(null,true);
             editor.setLocationRelativeTo(null);
             editor.fillFields(product);
             editor.setVisible(true);

@@ -30,13 +30,14 @@ public class ProductEditor extends javax.swing.JDialog {
     /**
      * Creates new form FrmProductEditor
      */
-    public ProductEditor() {
-        initComponents();
+    public ProductEditor(java.awt.Frame parent, boolean modal) {
+        super(parent,modal);
         context = ApplicationContext.getInstance();
         controller = context.getProductController();
         if (context.getActivePanel() instanceof JpnProducts) {
             panel = (JpnProducts)context.getActivePanel();
         }
+        initComponents();
     }
     
 //    public ProductEditor(ProductController controller) {
