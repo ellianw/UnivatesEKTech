@@ -5,7 +5,11 @@
 package Controllers;
 
 import DAO.ClientDAO;
+import Entities.ApplicationContext;
 import Entities.Client;
+import Entities.Product;
+import Views.Editors.ClientEditor;
+import Views.Editors.ProductEditor;
 import Views.Panes.JpnClients;
 import java.sql.Connection;
 import java.util.List;
@@ -19,18 +23,22 @@ public class ClientController {
     private ClientDAO dao = null;
     private JpnClients panel = null;
 
-    public ClientController(Connection conn) {
-        dao = new ClientDAO(conn);
-    }
-
     public ClientController() {
-    }    
+        dao = new ClientDAO();
+        if (ApplicationContext.getInstance().getActivePanel() instanceof JpnClients jpnClients) {
+            panel = jpnClients;
+        }        
+    }
     
     public void setPanel(JpnClients panel) {
         this.panel = panel;
     }
     
     public DefaultTableModel getFilledTableModel() {
+        return getFilledTableModel(false);
+    }
+    
+    public DefaultTableModel getFilledTableModel(boolean conditioned) {
         String[] colunas = { "ID", "Nome", "Email", "Telefone","CPF" };
         DefaultTableModel tableModel = new DefaultTableModel(colunas,0);
         List<Client> clientList = null;
@@ -57,24 +65,18 @@ public class ClientController {
         return tableModel;
     }
     
-    public boolean saveClient() {
-//       
-//        Client editingClient = new Client(panel.getClientId(),
-//                panel.getClientName().getText().trim(),
-//                panel.getClientEmail().getText().trim(),
-//                panel.getClientPhone().getText().trim(),
-//                panel.getClientCPF().getText().trim());
-//        try {
-//            if (editingClient.getId() == null) {
-//                dao.insert(editingClient);
-//            } else {
-//                dao.update(editingClient);
-//            }
-//        } catch (Exception e) {
-//            System.out.println("SQL error while inserting or updating clients: "+e);
-//            return false;
-//        }
-//        
+    public boolean saveClient(Client client) {
+        try {
+            if (client.getId() == null) {
+                dao.insert(client);
+            } else {
+                dao.update(client);
+            }
+        } catch (Exception e) {
+            System.out.println("SQL error while inserting or updating clients: "+e);
+            return false;
+        }
+        
         return true;
     }
     
@@ -89,13 +91,16 @@ public class ClientController {
     }
     
     public boolean editClient(Integer id) {
-//        try {
-//            Client client = dao.findById(id);
-//            panel.setEditingClient(client);
-//        } catch (Exception e) {
-//            System.out.println("SQL error while editing client: "+e);
-//            return false;
-//        }
+        try {
+            Client client = dao.findById(id);
+            ClientEditor editor = new ClientEditor(null,true);
+            editor.setLocationRelativeTo(null);
+            editor.fillFields(client);
+            editor.setVisible(true);
+        } catch (Exception e) {
+            System.out.println("SQL error while editing client: "+e);
+            return false;
+        }
         return true;
     }
 }

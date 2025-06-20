@@ -6,6 +6,7 @@ package Views.Panes;
 
 import Views.Editors.ClientEditor;
 import Controllers.ClientController;
+import Entities.ApplicationContext;
 import Entities.Client;
 import Utils.ViewUtils;
 import Views.FrmMain;
@@ -23,6 +24,7 @@ import javax.swing.SwingUtilities;
  * @author Ellian
  */
 public class JpnClients extends javax.swing.JPanel {
+    private ApplicationContext context;
     private ClientController controller = null;
     private Client editingClient = null;
     
@@ -30,15 +32,9 @@ public class JpnClients extends javax.swing.JPanel {
      * Creates new form JpnSuppliers
      */
     public JpnClients() {
-        controller = new ClientController();
-        controller.setPanel(this);
-        initComponents();
-        setMappings();
-    }
-    
-    public JpnClients(ClientController controller) {
-        this.controller = controller;
-        controller.setPanel(this);
+        context = ApplicationContext.getInstance(); 
+        context.setActivePanel(this);
+        controller = context.getClientController();     
         initComponents();
         setMappings();
     }
@@ -54,8 +50,8 @@ public class JpnClients extends javax.swing.JPanel {
 
         searchPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
+        searchVar = new javax.swing.JComboBox<>();
+        searchField = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
         listPane = new javax.swing.JPanel();
         jspListTable = new javax.swing.JScrollPane();
@@ -74,7 +70,7 @@ public class JpnClients extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel1.setText("Clientes:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "CPF", "Nome", "Telefone" }));
+        searchVar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "CPF", "Nome", "Telefone" }));
 
         btnSearch.setText("🔎");
 
@@ -87,9 +83,9 @@ public class JpnClients extends javax.swing.JPanel {
                 .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(searchPanelLayout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(searchVar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1)
+                        .addComponent(searchField)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSearch)))
                 .addContainerGap())
@@ -101,36 +97,14 @@ public class JpnClients extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchVar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSearch)))
         );
 
         add(searchPanel, java.awt.BorderLayout.NORTH);
 
-        jtbList.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                { new Integer(1), "Cliente 1", "51 9999-9999", "000.000.000-00"}
-            },
-            new String [] {
-                "ID", "Nome", "Telefone", "CPF"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        jtbList.setModel(controller.getFilledTableModel());
         jtbList.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jtbList.setRowSelectionAllowed(true);
         jtbList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -226,8 +200,6 @@ public class JpnClients extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Serif", 2, 12)); // NOI18N
         jLabel2.setText("Dica: Utilize F5 como atalho para o botão de busca.");
 
-        activeUser.setText("Usuário ativo:");
-
         javax.swing.GroupLayout hintPaneLayout = new javax.swing.GroupLayout(hintPane);
         hintPane.setLayout(hintPaneLayout);
         hintPaneLayout.setHorizontalGroup(
@@ -235,7 +207,7 @@ public class JpnClients extends javax.swing.JPanel {
             .addGroup(hintPaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 344, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 346, Short.MAX_VALUE)
                 .addComponent(activeUser)
                 .addContainerGap())
         );
@@ -253,9 +225,9 @@ public class JpnClients extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-        ClientEditor editor = new ClientEditor();
-        editor.setVisible(true);
+        ClientEditor editor = new ClientEditor(null,true);
         editor.setLocationRelativeTo(null);        
+        editor.setVisible(true);
     }//GEN-LAST:event_btnNewActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
@@ -264,11 +236,12 @@ public class JpnClients extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Selecione um cliente!", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        //boolean status = controller.editSupplier(id);
-//        if (!status) {
-//            JOptionPane.showMessageDialog(null, "Erro desconhecido ao excluir fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
-//            return;
-//        }
+        boolean status = controller.editClient(id);
+        if (!status) {
+            JOptionPane.showMessageDialog(null, "Erro desconhecido ao excluir fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        loadTable();
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelActionPerformed
@@ -278,12 +251,12 @@ public class JpnClients extends javax.swing.JPanel {
             return;
         }
         if (ViewUtils.excludePane()) {
-//          boolean status = controller.deleteClient(id);
-//          if (!status) {
-//              JOptionPane.showMessageDialog(null, "Erro desconhecido ao excluir fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
-//                return;
-//          }
-//          jtbList.setModel(controller.getFilledTableModel());
+            boolean status = controller.deleteClient(id);
+            if (!status) {
+                JOptionPane.showMessageDialog(null, "Erro desconhecido ao excluir fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
+                  return;
+            }
+            jtbList.setModel(controller.getFilledTableModel());
             JOptionPane.showMessageDialog(null, "Cliente deletado!", "Sucesso", JOptionPane.PLAIN_MESSAGE);        
         }
 
@@ -303,14 +276,14 @@ public class JpnClients extends javax.swing.JPanel {
     private javax.swing.JPanel btnPanel;
     private javax.swing.JButton btnSearch;
     private javax.swing.JPanel hintPane;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JScrollPane jspListTable;
     private javax.swing.JTable jtbList;
     private javax.swing.JPanel listPane;
+    private javax.swing.JTextField searchField;
     private javax.swing.JPanel searchPanel;
+    private javax.swing.JComboBox<String> searchVar;
     // End of variables declaration//GEN-END:variables
  
     private void exitPanel(){
@@ -321,30 +294,7 @@ public class JpnClients extends javax.swing.JPanel {
     public Integer getClientId() {
         return editingClient == null ? null : editingClient.getId();
     }
-    
-//    public JTextComponent getClientCPF() {
-//        return jtfCPF;
-//    }
-//
-//    public JTextComponent getClientEmail() {
-//        return jtfEmail;
-//    }
-//
-//    public JTextComponent getClientName() {
-//        return jtfName;
-//    }
-//
-//    public JTextComponent getClientPhone() {
-//        return jtfPhone;
-//    }
-//        
-//    public void setEditingClient(Client client) {
-//        editingClient = client;
-//        jtfCPF.setText(client.getCPF());
-//        jtfEmail.setText(client.getEmail());
-//        jtfName.setText(client.getName());
-//        jtfPhone.setText(client.getPhone());
-//    }
+
     private void setMappings() {
         KeyStroke shortcut = KeyStroke.getKeyStroke("F5");
         InputMap inputMap = btnSearch.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -358,4 +308,15 @@ public class JpnClients extends javax.swing.JPanel {
             }
         });
     }
+    
+    public void loadTable() {
+        jtbList.setModel(controller.getFilledTableModel());
+    }
+    
+    public String[] getSearchParameters(){
+        String[] output = new String[2];
+        output[0] = searchVar.getSelectedItem().toString();
+        output[1] = searchField.getText().toString();
+        return output;
+    }    
 }

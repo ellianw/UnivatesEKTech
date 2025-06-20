@@ -174,9 +174,9 @@ public class FrmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_listProductMenuItemActionPerformed
 
     private void clientRegisterMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientRegisterMenuItemActionPerformed
-        ClientEditor editor = new ClientEditor();
-        editor.setVisible(true);
+        ClientEditor editor = new ClientEditor(this,true);
         editor.setLocationRelativeTo(null);
+        editor.setVisible(true);
     }//GEN-LAST:event_clientRegisterMenuItemActionPerformed
 
     private void listSalesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listSalesMenuItemActionPerformed
@@ -202,7 +202,7 @@ public class FrmMain extends javax.swing.JFrame {
     public void createClientPane(){
         clearFrame(false);
         if (currentPane == null) {
-            currentPane = new JpnClients(new ClientController(null));
+            currentPane = new JpnClients();
             getContentPane().add(currentPane,BorderLayout.CENTER);
             revalidate();
         }

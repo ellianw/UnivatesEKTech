@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import Entities.ApplicationContext;
 import Entities.Client;
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,8 +17,8 @@ import java.util.List;
 public class ClientDAO {
     private Connection conn;
 
-    public ClientDAO(Connection conn) {
-        this.conn = conn;
+    public ClientDAO() {
+        conn = ApplicationContext.getInstance().getConnection();
     }
 
     public void insert(Client client) throws SQLException {

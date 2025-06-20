@@ -4,7 +4,13 @@
  */
 package Views.Editors;
 
+import Controllers.ClientController;
+import Entities.ApplicationContext;
+import Entities.Client;
+import Entities.Product;
+import Utils.TextUtils;
 import Utils.ViewUtils;
+import Views.Panes.JpnClients;
 import javax.swing.JOptionPane;
 
 /**
@@ -12,16 +18,21 @@ import javax.swing.JOptionPane;
  * @author Ellian
  */
 public class ClientEditor extends javax.swing.JDialog {
-
+    private ApplicationContext context;
+    private ClientController controller;
+    private Client editingClient;
+    private JpnClients panel;
+    
     /**
      * Creates new form ClientEditor
      */
     public ClientEditor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        initComponents();
-    }
-    
-    public ClientEditor() {
+        context = ApplicationContext.getInstance();
+        controller = context.getClientController();
+        if (context.getActivePanel() instanceof JpnClients jpnClients) {
+            panel = jpnClients;
+        }        
         initComponents();
     }
 
@@ -151,16 +162,17 @@ public class ClientEditor extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Preencha todos os campos!", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        //        boolean sucess = controller.saveClient();
-        //
-        //        if (!sucess) {
-            //            JOptionPane.showMessageDialog(null, "Erro desconhecido ao salvar fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
-            //            return;
-            //        }
+        setProduct();
+        boolean sucess = controller.saveClient(editingClient);
+
+        if (!sucess) {
+                JOptionPane.showMessageDialog(null, "Erro desconhecido ao salvar fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
         JOptionPane.showMessageDialog(this, "Cliente cadastrado!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
-        //jtbList.setModel(controller.getFilledTableModel());
-//        editingClient=null;
-//        ViewUtils.clearFields(this);
+        if (!(panel == null)) {
+            panel.loadTable();
+        }
         dispose();
     }//GEN-LAST:event_btnSaveEditActionPerformed
 
@@ -181,4 +193,28 @@ public class ClientEditor extends javax.swing.JDialog {
     private javax.swing.JTextField jtfName;
     private javax.swing.JFormattedTextField jtfPhone;
     // End of variables declaration//GEN-END:variables
+
+    private void setProduct(){
+        if (editingClient == null) {
+            editingClient = new Client(null,
+                    jtfName.getText(),
+                    jtfCPF.getValue().toString(),
+                    jtfPhone.getText(),
+                    jtfEmail.getText()
+            );
+            return;
+        }
+        editingClient.setName(jtfName.getText());
+        editingClient.setCpf(jtfCPF.getValue().toString());
+        editingClient.setPhone(jtfPhone.getText());
+        editingClient.setEmail(jtfEmail.getText());
+    }
+    
+    public void fillFields(Client client){
+        editingClient = client;
+        jtfCPF.setValue(editingClient.getCPF());
+        jtfName.setText(editingClient.getName());
+        jtfEmail.setText(editingClient.getEmail());
+        jtfPhone.setValue(editingClient.getPhone());
+    }    
 }

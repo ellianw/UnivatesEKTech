@@ -64,6 +64,9 @@ public class ApplicationContext {
     }
 
     public ClientController getClientController() {
+        if (clientController == null) {
+            clientController = new ClientController();
+        }        
         return clientController;
     }
 
