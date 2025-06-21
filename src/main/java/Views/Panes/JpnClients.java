@@ -325,7 +325,7 @@ public class JpnClients extends javax.swing.JPanel {
     public String getSearchExpression(){
         String clause = null;
         String column = searchVar.getSelectedItem().toString().toLowerCase();
-        String value = searchField.getText().toString();
+        String value = searchField.getText().toString().toLowerCase();
         if ("id".equals(column) && !value.isBlank()) {
             clause = "id = "+value;
         } else if (!value.isBlank()){

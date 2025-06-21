@@ -42,18 +42,18 @@ public class ProductController {
     }
     
     public DefaultTableModel getFilledTableModel() {
-        return getFilledTableModel(0,null);
+        return getFilledTableModel(false,null);
     }
     
-    public DefaultTableModel getFilledTableModel(int modifier, String expression) {
+    public DefaultTableModel getFilledTableModel(boolean modified, String expression) {
         String[] colunas = { "ID", "Nome", "Descrição", "Valor","Estoque" };
         DefaultTableModel tableModel = new DefaultTableModel(colunas,0);
         List<Product> productList = null;
         
         try {
-            if (modifier == INCLUSIVE) {
+            if (modified) {
                 productList = dao.findAllActive(expression);
-            } else if (modifier == ALL) {
+            } else {
                 productList = dao.findAllActive();
             }            
         } catch (Exception e) {
