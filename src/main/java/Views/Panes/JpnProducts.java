@@ -272,7 +272,7 @@ public class JpnProducts extends javax.swing.JPanel {
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        jtbList.setModel(controller.getFilledTableModel(true));
+        jtbList.setModel(controller.getFilledTableModel(ProductController.INCLUSIVE,getSearchExpression()));
     }//GEN-LAST:event_btnSearchActionPerformed
 
 
@@ -326,10 +326,15 @@ public class JpnProducts extends javax.swing.JPanel {
         jtbList.setModel(controller.getFilledTableModel());
     }
     
-    public String[] getSearchParameters(){
-        String[] output = new String[2];
-        output[0] = searchVar.getSelectedItem().toString();
-        output[1] = searchField.getText().toString();
-        return output;
+    public String getSearchExpression(){
+        String clause = null;
+        String column = searchVar.getSelectedItem().toString().toLowerCase();
+        String value = searchField.getText().toString();
+        if ("id".equals(column) && !value.isBlank()) {
+            clause = "id = "+value;
+        } else if (!value.isBlank()){
+            clause = "name like '%"+value+"%'";
+        }
+        return clause;
     }
 }

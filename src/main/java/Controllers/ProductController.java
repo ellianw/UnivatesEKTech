@@ -10,6 +10,7 @@ import Entities.Product;
 import Views.Editors.ProductEditor;
 import Views.Panes.JpnProducts;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,6 +19,10 @@ import javax.swing.table.DefaultTableModel;
  * @author Ellian
  */
 public class ProductController {
+    public final static int ALL = 0;
+    public final static int INCLUSIVE = 1;
+    public final static int EXCLUSIVE = 2;    
+            
     private ProductDAO dao = null;
     private JpnProducts panel = null;
 
@@ -37,21 +42,20 @@ public class ProductController {
     }
     
     public DefaultTableModel getFilledTableModel() {
-        return getFilledTableModel(false);
+        return getFilledTableModel(0,null);
     }
     
-    public DefaultTableModel getFilledTableModel(boolean conditioned) {
+    public DefaultTableModel getFilledTableModel(int modifier, String expression) {
         String[] colunas = { "ID", "Nome", "Descrição", "Valor","Estoque" };
         DefaultTableModel tableModel = new DefaultTableModel(colunas,0);
         List<Product> productList = null;
         
-        String whereClause = "";
-        
         try {
-            if (conditioned) {
-                whereClause = getWhereClause();
-            }
-            productList = dao.findAllActive(whereClause);
+            if (modifier == INCLUSIVE) {
+                productList = dao.findAllActive(expression);
+            } else if (modifier == ALL) {
+                productList = dao.findAllActive();
+            }            
         } catch (Exception e) {
             System.out.println("Erro ao buscar clientes: "+e);
             e.printStackTrace();
@@ -110,18 +114,5 @@ public class ProductController {
             return false;
         }
         return true;
-    }
-    
-    private String getWhereClause() {
-        String clause = null;
-        String[] parameters = panel.getSearchParameters();
-        String column = parameters[0].toLowerCase();
-        String value = parameters[1].toLowerCase();
-        if ("id".equals(column) && !value.isBlank()) {
-            clause = "id = "+value;
-        } else if (!value.isBlank()){
-            clause = "name like '%"+value+"%'";
-        }
-        return clause;
     }
 }
