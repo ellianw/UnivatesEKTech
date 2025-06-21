@@ -12,7 +12,9 @@ import Views.Editors.ClientEditor;
 import Views.Editors.ProductEditor;
 import Views.Panes.JpnClients;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -22,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
 public class ClientController {
     private ClientDAO dao = null;
     private JpnClients panel = null;
-
+    
     public ClientController() {
         dao = new ClientDAO();
         if (ApplicationContext.getInstance().getActivePanel() instanceof JpnClients jpnClients) {
@@ -35,23 +37,22 @@ public class ClientController {
     }
     
     public DefaultTableModel getFilledTableModel() {
-        return getFilledTableModel(false);
+        return getFilledTableModel(false,null);
     }
     
-    public DefaultTableModel getFilledTableModel(boolean conditioned) {
+    public DefaultTableModel getFilledTableModel(boolean conditioned,String expression) {
         String[] colunas = { "ID", "Nome", "Email", "Telefone","CPF" };
         DefaultTableModel tableModel = new DefaultTableModel(colunas,0);
         List<Client> clientList = null;
         
-        String whereClause = "";
-        
         try {
             if (conditioned) {
-                whereClause = getWhereClause();
-            }
-            clientList = dao.findAllActive(whereClause);
+                clientList = dao.findAllActive(expression);
+            } else {
+                clientList = dao.findAllActive();
+            }            
         } catch (Exception e) {
-            System.out.println("Erro ao buscar clientes: "+e);
+            System.out.println("SQL error searching clients: "+e);
         }
 
         if (clientList == null ) return tableModel;

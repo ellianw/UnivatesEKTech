@@ -49,6 +49,10 @@ public class ClientDAO {
         }
         return null;
     }
+    
+    public List<Client> findAllActive() throws SQLException {
+        return findAllActive(null);
+    }
 
     public List<Client> findAllActive(String whereClause) throws SQLException {
         List<Client> clients = new ArrayList<>();
