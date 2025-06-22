@@ -4,40 +4,72 @@
  */
 package Views.Editors;
 
+import Controllers.ClientController;
+import Controllers.ProductController;
+import Controllers.SaleController;
+import Entities.ApplicationContext;
+import Entities.Client;
+import Entities.Product;
 import Utils.ViewUtils;
+import Views.Panes.JpnSales;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.math.RoundingMode;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
 
 /**
  *
  * @author Ellian
  */
 public class SaleEditor extends javax.swing.JDialog {
-
+    private SaleController controller;
+    private ProductController productController;
+    private ClientController clientController;
+    
+    private ArrayList shoppingCart;
     /**
      * Creates new form SaleEditor
      */
     public SaleEditor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        controller = ApplicationContext.getInstance().getSaleController();
+        productController = ApplicationContext.getInstance().getProductController();
+        clientController = ApplicationContext.getInstance().getClientController();
+        shoppingCart = new ArrayList<Integer>();
         initComponents();
-    }
-    
-    public SaleEditor() {
-        initComponents();
+        
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int)Math.round(screenSize.width*0.5);
         int heigh = (int) Math.round(screenSize.height*0.5);
         setSize(width,heigh);
         setLocationRelativeTo(null);
+        
+        setMappings();
+        
+        cartManipulationListener();
     }
 
     /**
@@ -50,52 +82,44 @@ public class SaleEditor extends javax.swing.JDialog {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
+        btnSearch = new javax.swing.JButton();
+        searchVar = new javax.swing.JComboBox<>();
+        searchField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        stockTable = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        clientComboBox = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        shoppingCartTable = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        removeProductButton = new javax.swing.JButton();
+        addProductButton = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        sellButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         sellDate = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nova venda");
 
-        jButton3.setText("🔎");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome", "ID" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        btnSearch.setText("🔎");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                btnSearchActionPerformed(evt);
             }
         });
 
+        searchVar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome", "ID" }));
+
         jLabel2.setText("Estoque:");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        stockTable.setModel(productController.getFilledTableModel());
+        jScrollPane1.setViewportView(stockTable);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -106,11 +130,11 @@ public class SaleEditor extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(searchVar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3))
+                        .addComponent(btnSearch))
                     .addComponent(jLabel2))
                 .addContainerGap())
         );
@@ -122,12 +146,12 @@ public class SaleEditor extends javax.swing.JDialog {
                         .addContainerGap()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(searchVar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton3)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(btnSearch)
+                            .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -137,20 +161,17 @@ public class SaleEditor extends javax.swing.JDialog {
 
         jLabel3.setText("Cliente:");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cliente 1", "Cliente 2", "Cliente 3", "Cliente 4" }));
+        clientComboBox.setModel(clientController.getFilledComboBoxModel());
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane2.setViewportView(jTable2);
+        shoppingCartTable.setModel(productController.getShoppingCartFilledTableModel(null));
+        shoppingCartTable.setCellSelectionEnabled(true);
+        shoppingCartTable.getTableHeader().setResizingAllowed(false);
+        shoppingCartTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(shoppingCartTable);
+
+        jLabel4.setText("Valor total:");
+
+        jLabel5.setText("R$: 00000");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -159,9 +180,16 @@ public class SaleEditor extends javax.swing.JDialog {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel5))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(clientComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -170,27 +198,31 @@ public class SaleEditor extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(clientComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
                 .addContainerGap())
         );
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.EAST);
 
-        jButton5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jButton5.setText("<");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        removeProductButton.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        removeProductButton.setText("<");
+        removeProductButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                removeProductButtonActionPerformed(evt);
             }
         });
 
-        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jButton4.setText(">");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        addProductButton.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        addProductButton.setText(">");
+        addProductButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                addProductButtonActionPerformed(evt);
             }
         });
 
@@ -201,17 +233,17 @@ public class SaleEditor extends javax.swing.JDialog {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(removeProductButton, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
+                    .addComponent(addProductButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(182, Short.MAX_VALUE)
-                .addComponent(jButton4)
+                .addComponent(addProductButton)
                 .addGap(18, 18, 18)
-                .addComponent(jButton5)
+                .addComponent(removeProductButton)
                 .addGap(185, 185, 185))
         );
 
@@ -224,10 +256,10 @@ public class SaleEditor extends javax.swing.JDialog {
             }
         });
 
-        jButton2.setText("Concluir");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        sellButton.setText("Concluir");
+        sellButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                sellButtonActionPerformed(evt);
             }
         });
 
@@ -256,7 +288,7 @@ public class SaleEditor extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sellDate, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 595, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addComponent(sellButton)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
                 .addContainerGap())
@@ -265,53 +297,75 @@ public class SaleEditor extends javax.swing.JDialog {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
+                    .addComponent(sellButton)
                     .addComponent(jButton1)
                     .addComponent(jLabel1)
                     .addComponent(sellDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 12, Short.MAX_VALUE))
         );
 
-        jButton2.putClientProperty( "FlatLaf.style","borderColor:#7FFF00;background:#D0F0C0;borderWidth:2");
+        sellButton.putClientProperty( "FlatLaf.style","borderColor:#7FFF00;background:#D0F0C0;borderWidth:2");
 
         getContentPane().add(jPanel4, java.awt.BorderLayout.SOUTH);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if (ViewUtils.missingField(this)) {
-            JOptionPane.showMessageDialog(this, "Preencha todos os campos!", "Aviso", JOptionPane.WARNING_MESSAGE);
+    private void sellButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellButtonActionPerformed
+        if (shoppingCart.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Selecione ao menos um produto.", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        //        boolean sucess = controller.saveClient();
-        //
-        //        if (!sucess) {
-            //            JOptionPane.showMessageDialog(null, "Erro desconhecido ao salvar fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
-            //            return;
-            //        }
+        Integer clientId = ((Client)clientComboBox.getSelectedItem()).getId();
+        if (clientId == null) {
+            JOptionPane.showMessageDialog(this, "Selecione um cliente.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (sellDate.getValue() == null){
+            JOptionPane.showMessageDialog(this, "Preencha a data da venda..", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        Map productMap = buildProductCartMap();
+        int sellerId = ApplicationContext.getInstance().getActiveUser().getId();
+        String date = sellDate.getText();
+        boolean sucess = controller.saveSale(clientId,sellerId,productMap,date);
+
+        if (!sucess) {
+                JOptionPane.showMessageDialog(null, "Erro desconhecido ao salvar fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
         JOptionPane.showMessageDialog(this, "Venda realizada!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
-        //jtbList.setModel(controller.getFilledTableModel());
+        //jtbList.setModel(controller.getShoppingCartFilledTableModel());
 //        editingClient=null;
 //        ViewUtils.clearFields(this);
         dispose();        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_sellButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void addProductButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductButtonActionPerformed
+        Integer selectedItem = ViewUtils.getSelectedListItemId(stockTable);
+        if(selectedItem == null) {
+            JOptionPane.showMessageDialog(this, "Selecione um produto!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        shoppingCart.add(selectedItem);
+        updateCart();
+        stockTable.setModel(productController.getFilledTableModel(true, getProductSearchExpression()));
+    }//GEN-LAST:event_addProductButtonActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    private void removeProductButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeProductButtonActionPerformed
+        Integer selectedItem = ViewUtils.getSelectedListItemId(shoppingCartTable);
+        if(selectedItem == null) {
+            JOptionPane.showMessageDialog(this, "Selecione um produto!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        shoppingCart.remove(selectedItem);
+        updateCart();
+        stockTable.setModel(productController.getFilledTableModel(true, getProductSearchExpression()));
+    }//GEN-LAST:event_removeProductButtonActionPerformed
 
     private void sellDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellDateActionPerformed
         // TODO add your handling code here:
@@ -331,27 +385,136 @@ public class SaleEditor extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_sellDateMouseClicked
 
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        stockTable.setModel(productController.getFilledTableModel(true, getProductSearchExpression()));
+    }//GEN-LAST:event_btnSearchActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addProductButton;
+    private javax.swing.JButton btnSearch;
+    private javax.swing.JComboBox<String> clientComboBox;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton removeProductButton;
+    private javax.swing.JTextField searchField;
+    private javax.swing.JComboBox<String> searchVar;
+    private javax.swing.JButton sellButton;
     private javax.swing.JFormattedTextField sellDate;
+    private javax.swing.JTable shoppingCartTable;
+    private javax.swing.JTable stockTable;
     // End of variables declaration//GEN-END:variables
+
+    public DefaultFormatterFactory getCurrencyFormatter() {
+        DecimalFormat formato = new DecimalFormat("#,##0.00");
+        formato.setGroupingUsed(true); // separador de milhar
+        formato.setRoundingMode(RoundingMode.HALF_UP);
+
+        NumberFormatter formatter = new NumberFormatter(formato);
+        formatter.setValueClass(Double.class);
+        formatter.setAllowsInvalid(false); // impede letras e entrada inválida
+        formatter.setMinimum(0.0); // se quiser restringir a números positivos
+
+        return new DefaultFormatterFactory(formatter);
+    }
+    
+    private void updateCart(){        
+        shoppingCartTable.setModel(productController.getShoppingCartFilledTableModel(shoppingCart));
+        cartManipulationListener();
+    }
+   
+    private String getProductSearchExpression() {
+        String clause = "";
+        String column = searchVar.getSelectedItem().toString().toLowerCase();
+        String value = searchField.getText().toString().toLowerCase();
+        String cartString = shoppingCart.toString();
+        
+        if ("id".equals(column) && !value.isBlank()) {
+            if (!shoppingCart.contains(value)) {
+                clause = "id = "+value;
+            } else {
+                clause = "id = 0";
+            }
+        } else if (!value.isBlank()){
+            clause = "lower(name) like '%"+value+"%'";
+        }
+        if (!shoppingCart.isEmpty()) {
+            if (!clause.isBlank() && !clause.contains("AND")) {
+                clause +=" AND";
+            }
+            clause+=" id NOT IN ("+cartString.substring(1,cartString.length()-1)+")";
+        }
+        return clause;    
+    }
+    
+    private void setMappings() {
+        KeyStroke F5 = KeyStroke.getKeyStroke("F5");
+        InputMap inputMap = btnSearch.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = btnSearch.getActionMap();
+
+        inputMap.put(F5, "clickButton");
+        actionMap.put("clickButton", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnSearch.doClick(); // simula clique
+            }
+        });
+    }
+    
+    private void cartManipulationListener() {
+        shoppingCartTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+        DefaultTableModel tableModel = (DefaultTableModel) shoppingCartTable.getModel();
+
+        tableModel.addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                if (e.getType() == TableModelEvent.UPDATE) {
+                    int row = e.getFirstRow();
+                    int editedColumn = e.getColumn();
+                    
+                    double originalValue = productController.getProductOriginalValue((Integer) tableModel.getValueAt(row, 0));
+
+                    if (editedColumn == 4) {
+                        int quantity = 1;
+                        try {
+                            quantity = Integer.parseInt(tableModel.getValueAt(row, editedColumn).toString());
+                        } catch (NumberFormatException ex) {
+                            JOptionPane.showMessageDialog(jPanel1.getParent(), "Insira um valor inteiro!");
+                        }
+                        tableModel.setValueAt(quantity*originalValue, row, 3);
+                    }
+                }
+            }
+        });
+    }
+    
+    private Map buildProductCartMap(){
+        Map<Integer, double[]> outputMap = new HashMap<>();
+        
+        DefaultTableModel model = (DefaultTableModel) shoppingCartTable.getModel();
+        int rowCount = model.getRowCount();
+        for (int i =0;i<rowCount;i++) {
+            double[] tmp = new double[2];
+            
+            int productId = Integer.parseInt(model.getValueAt(i,4).toString());
+            double quantity = Double.parseDouble(model.getValueAt(i,4).toString());
+            double value = Double.parseDouble(model.getValueAt(i,3).toString());
+            
+            tmp[0] = quantity;
+            tmp[1] = value;
+            outputMap.put(productId, tmp);
+        }        
+        
+        return outputMap;
+    }
 }

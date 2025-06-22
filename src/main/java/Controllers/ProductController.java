@@ -7,6 +7,7 @@ package Controllers;
 import DAO.ProductDAO;
 import Entities.ApplicationContext;
 import Entities.Product;
+import Views.Components.CartTableModel;
 import Views.Editors.ProductEditor;
 import Views.Panes.JpnProducts;
 import java.sql.Connection;
@@ -77,6 +78,37 @@ public class ProductController {
         return tableModel;
     }
     
+    public CartTableModel getShoppingCartFilledTableModel(ArrayList<Integer> ids) {
+        String[] colunas = { "ID", "Nome","Estoque", "Valor", "Quantidade"};
+        CartTableModel tableModel = new CartTableModel(colunas,0);
+        ArrayList<Product> productList = null;
+        
+        if (ids == null) return tableModel;
+        if (ids.isEmpty()) return tableModel;
+        
+        try {
+            productList = dao.findById(ids);
+        } catch (Exception e) {
+            System.out.println("Erro ao buscar clientes: "+e);
+            e.printStackTrace();
+        }
+        
+        if (productList == null) return tableModel;
+        
+        for (Product p : productList) {
+            Object[] linha = {
+                p.getId(),
+                p.getName(),
+                p.getStock(),
+                p.getValue(),
+                1
+            };
+            tableModel.addRow(linha);
+        }
+        
+        return tableModel;
+    }    
+    
     public boolean saveProduct(Product product) {
         try {
             if (product.getId() == null) {
@@ -114,5 +146,19 @@ public class ProductController {
             return false;
         }
         return true;
+    }
+    
+    public double getProductOriginalValue(Integer id){
+        Product product = null;
+        try {
+            product =dao.findById(id);
+        } catch (Exception e) {
+            System.out.println("Error getting original product value: "+e);
+        }
+        if (product == null) {
+            return 0.0;
+        } else {
+            return product.getValue();
+        }
     }
 }

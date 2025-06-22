@@ -110,16 +110,19 @@ public class ClientController {
         return true;
     }
     
-    private String getWhereClause() {
-        String clause = null;
-        String[] parameters = panel.getSearchParameters();
-        String column = parameters[0].toLowerCase();
-        String value = parameters[1].toLowerCase();
-        if ("id".equals(column) && !value.isBlank()) {
-            clause = "id = "+value;
-        } else if (!value.isBlank()){
-            clause = "name like '%"+value+"%'";
+    public DefaultComboBoxModel getFilledComboBoxModel() {
+        List<Client> clients = null;
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        model.addElement(new Client(null, "Selecione um cliente", null, null, null));
+        try {
+            clients = dao.findAllActive(null);
+        } catch (Exception e) {
+            System.out.println("SQL error searching clients: "+e);
         }
-        return clause;
+        if (clients == null ) return model;
+        for (Client c : clients) {
+            model.addElement(c);
+        }
+        return model;
     }
 }

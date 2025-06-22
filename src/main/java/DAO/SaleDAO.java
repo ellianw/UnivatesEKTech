@@ -4,9 +4,12 @@
  */
 package DAO;
 
+import Entities.ApplicationContext;
+import Entities.Product;
 import Entities.Sale;
 import java.sql.*;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Map;
 
 /**
  *
@@ -15,45 +18,81 @@ import java.util.List;
 
 public class SaleDAO {
     private Connection conn;
+    private ProductDAO productDAO;
 
-    public SaleDAO(Connection conn) {
-        this.conn = conn;
+    public SaleDAO() {
+        conn = ApplicationContext.getInstance().getConnection();
+        productDAO = new ProductDAO();
     }
 
-    public void insert(Sale sale, Date date, List<Integer> productIds, List<Integer> quantities, List<Double> productValues) throws SQLException {
-        String saleSql = "INSERT INTO sale (client_id, date) VALUES (?, ?) RETURNING id";
-        String saleProductSql = "INSERT INTO sale_product (sale_id, product_id, quantity, product_value) VALUES (?, ?, ?, ?)";
+    public boolean insert(Sale sale) {
+        String insertSaleSQL = "INSERT INTO sale (ref_client, ref_user, date) VALUES (?, ?, ?) RETURNING id";
+        String insertSaleProductSQL = "INSERT INTO sale_product (ref_sale, ref_product, quantity, product_value) VALUES (?, ?, ?, ?)";
 
-        try (
-            PreparedStatement saleStmt = conn.prepareStatement(saleSql);
-            PreparedStatement spStmt = conn.prepareStatement(saleProductSql)
-        ) {
+        try {
             conn.setAutoCommit(false);
 
-            // Insert sale
-            saleStmt.setInt(1, sale.getClientId());
-            saleStmt.setDate(2, date);
-            ResultSet rs = saleStmt.executeQuery();
-            int saleId = 0;
-            if (rs.next()) {
-                saleId = rs.getInt(1);
+            // 1. Inserir a venda
+            int saleId;
+            try (PreparedStatement stmt = conn.prepareStatement(insertSaleSQL)) {
+                stmt.setInt(1, sale.getClientId());
+                stmt.setInt(2, sale.getSellerId());
+                stmt.setDate(3, parseDate(sale.getDate()));
+
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    saleId = rs.getInt(1);
+                } else {
+                    conn.rollback();
+                    return false;
+                }
             }
 
-            // Insert related products
-            for (int i = 0; i < productIds.size(); i++) {
-                spStmt.setInt(1, saleId);
-                spStmt.setInt(2, productIds.get(i));
-                spStmt.setInt(3, quantities.get(i));
-                spStmt.setDouble(4, productValues.get(i));
-                spStmt.addBatch();
+            // 2. Inserir os produtos da venda
+            try (PreparedStatement stmt = conn.prepareStatement(insertSaleProductSQL)) {
+                Map<Integer, double[]> map = sale.getProductsMap();
+                
+
+                for (Integer productId : map.keySet()) {
+                    double[] extraMap = map.get(productId);
+                    stmt.setInt(1, saleId);
+                    stmt.setInt(2, productId);
+                    stmt.setInt(3, (int) extraMap[0]);
+                    stmt.setDouble(4, extraMap[1]);
+                    stmt.addBatch();
+                }
+
+                stmt.executeBatch();
             }
-            spStmt.executeBatch();
+
             conn.commit();
-        } catch (SQLException ex) {
-            conn.rollback();
-            throw ex;
+            return true;
+
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+            return false;
         } finally {
-            conn.setAutoCommit(true);
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
     }
+    
+    public static java.sql.Date parseDate(String textDate) {
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            java.util.Date utilDate = format.parse(textDate);
+            return new java.sql.Date(utilDate.getTime()); 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }    
 }

@@ -165,7 +165,7 @@ public class FrmMain extends javax.swing.JFrame {
     }//GEN-LAST:event_productRegisterMenuItemActionPerformed
 
     private void newSaleMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSaleMenuItemActionPerformed
-        SaleEditor editor = new SaleEditor();
+        SaleEditor editor = new SaleEditor(this,true);
         editor.setVisible(true);
     }//GEN-LAST:event_newSaleMenuItemActionPerformed
 
@@ -220,7 +220,7 @@ public class FrmMain extends javax.swing.JFrame {
     public void createSalesPane(){
         clearFrame(false);
         if (currentPane == null) {
-            currentPane = new JpnSales(new SaleController(null));
+            currentPane = new JpnSales();
             getContentPane().add(currentPane,BorderLayout.CENTER);
             getContentPane().revalidate();
         }    

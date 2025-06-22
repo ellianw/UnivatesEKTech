@@ -5,8 +5,9 @@
 package Controllers;
 
 import DAO.SaleDAO;
+import Entities.Sale;
 import Views.Panes.JpnSales;
-import java.sql.Connection;
+import java.util.Map;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -17,12 +18,9 @@ public class SaleController {
     private SaleDAO dao = null;
     private JpnSales panel = null;
 
-    public SaleController(Connection conn) {
-        dao = new SaleDAO(conn);
-    }
-
     public SaleController() {
-    }    
+        dao = new SaleDAO();
+    }
     
     public void setPanel(JpnSales panel) {
         this.panel = panel;
@@ -55,23 +53,18 @@ public class SaleController {
         return tableModel;
     }
     
-    public boolean saveSale() {
-       
-//        Client editingClient = new Client(panel.getClientId(),
-//                panel.getClientName().getText().trim(),
-//                panel.getClientEmail().getText().trim(),
-//                panel.getClientPhone().getText().trim(),
-//                panel.getClientCPF().getText().trim());
-//        try {
-//            if (editingClient.getId() == null) {
-//                dao.insert(editingClient);
-//            } else {
-//                dao.update(editingClient);
-//            }
-//        } catch (Exception e) {
-//            System.out.println("SQL error while inserting or updating clients: "+e);
-//            return false;
-//        }
+    public boolean saveSale(Integer clientId, Integer sellerId, Map productMap, String date) {
+        Sale sale = new Sale(null, clientId, sellerId, productMap, date, calculateSaleValue(productMap));
+        try {
+            if (sale.getId() == null) {
+                dao.insert(sale);
+            } else {
+//                dao.update(sale);
+            }
+        } catch (Exception e) {
+            System.out.println("SQL error while inserting or updating sale: "+e);
+            return false;
+        }
         
         return true;
     }
@@ -95,5 +88,14 @@ public class SaleController {
 //            return false;
 //        }
         return true;
+    }
+    
+    private double calculateSaleValue(Map sale) {
+        double output = 0;
+        for (Object v : sale.values()) {
+            double[] arr = (double[]) v;
+            output += arr[1];
+        }
+        return output;
     }
 }

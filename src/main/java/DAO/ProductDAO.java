@@ -51,6 +51,29 @@ public class ProductDAO {
         return null;
     }
     
+    public ArrayList<Product> findById(ArrayList<Integer> ids) throws SQLException {
+        ArrayList<Product> list = new ArrayList<>();
+        String sql = "SELECT * FROM product WHERE id IN (";
+        for (int id : ids) {
+            sql+=id+",";
+        }
+        sql = sql.substring(0,sql.length()-1)+')';
+        System.out.println(sql);
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                list.add(new Product(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("description"),
+                    rs.getDouble("value"),
+                    rs.getInt("stock"))
+                );
+            }
+        }
+        return list;
+    }    
+    
     public List<Product> findAllActive() throws SQLException {
         return findAllActive(null);
     }

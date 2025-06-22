@@ -7,8 +7,10 @@ package Views.Panes;
 
 import Views.Editors.ProductEditor;
 import Controllers.SaleController;
+import Entities.ApplicationContext;
 import Entities.Sale;
 import Utils.ViewUtils;
+import Views.Editors.SaleEditor;
 import Views.FrmMain;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
@@ -24,23 +26,17 @@ import javax.swing.SwingUtilities;
  * @author Ellian
  */
 public class JpnSales extends javax.swing.JPanel {
-    private SaleController controller = null;
-    private Sale editingProduct = null;
+    private ApplicationContext context;
+    private SaleController controller;
     /**
      * Creates new form JpnSales
      */
     public JpnSales() {
-        controller = new SaleController();
-        controller.setPanel(this);
+        context = ApplicationContext.getInstance();
+        controller = context.getSaleController();
         initComponents();
         setMappings();
-    }
-    
-    public JpnSales(SaleController controller) {
-        this.controller = controller;
-        controller.setPanel(this);
-        initComponents();
-        setMappings();
+        context.setActivePanel(this);
     }
 
     /**
@@ -257,9 +253,9 @@ public class JpnSales extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-        ProductEditor editor = new ProductEditor();
-        editor.setVisible(true);
+        SaleEditor editor = new SaleEditor(null,true);
         editor.setLocationRelativeTo(null);
+        editor.setVisible(true);
     }//GEN-LAST:event_btnNewActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
@@ -273,7 +269,7 @@ public class JpnSales extends javax.swing.JPanel {
         }        
         //boolean status = controller.editSupplier(id);
         //        if (!status) {
-            //            JOptionPane.showMessageDialog(null, "Erro desconhecido ao excluir fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
+            //            JOptionPane.showMessageDialog(null, "Erro desconhecido ao editar venda!", "Erro", JOptionPane.ERROR_MESSAGE);
             //            return;
             //        }
     }//GEN-LAST:event_btnEditActionPerformed
@@ -287,7 +283,7 @@ public class JpnSales extends javax.swing.JPanel {
         if (ViewUtils.excludePane()) {
         //        boolean status = controller.deleteClient(id);
         //        if (!status) {
-            //            JOptionPane.showMessageDialog(null, "Erro desconhecido ao excluir fornecedor!", "Erro", JOptionPane.ERROR_MESSAGE);
+            //            JOptionPane.showMessageDialog(null, "Erro desconhecido ao excluir venda!", "Erro", JOptionPane.ERROR_MESSAGE);
             //            return;
             //        }
         //        jtbList.setModel(controller.getFilledTableModel());
@@ -300,7 +296,7 @@ public class JpnSales extends javax.swing.JPanel {
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        JOptionPane.showMessageDialog(null, "Busca realizada!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
+//        JOptionPane.showMessageDialog(null, "Busca realizada!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
     }//GEN-LAST:event_btnSearchActionPerformed
 
 
