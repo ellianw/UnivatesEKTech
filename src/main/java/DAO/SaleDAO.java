@@ -5,10 +5,13 @@
 package DAO;
 
 import Entities.ApplicationContext;
+import Entities.Client;
 import Entities.Product;
 import Entities.Sale;
 import java.sql.*;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -24,6 +27,27 @@ public class SaleDAO {
         conn = ApplicationContext.getInstance().getConnection();
         productDAO = new ProductDAO();
     }
+    
+    public ArrayList getAllSalesSimplified() {
+        ArrayList<Sale> saleList = new ArrayList();
+        String sql = "SELECT * FROM sale";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                saleList.add(new Sale(rs.getInt("id"),
+                    rs.getInt("ref_client"),
+                    rs.getInt("ref_user"),
+                    null,
+                    parseToString(rs.getDate("date")),
+                    getSaleValue(rs.getInt("id"))
+                ));
+            }
+        } catch (Exception e) {
+            System.out.println("Error getting sales info: "+e);
+        }
+        
+        return saleList;
+    }
 
     public boolean insert(Sale sale) {
         String insertSaleSQL = "INSERT INTO sale (ref_client, ref_user, date) VALUES (?, ?, ?) RETURNING id";
@@ -37,7 +61,7 @@ public class SaleDAO {
             try (PreparedStatement stmt = conn.prepareStatement(insertSaleSQL)) {
                 stmt.setInt(1, sale.getClientId());
                 stmt.setInt(2, sale.getSellerId());
-                stmt.setDate(3, parseDate(sale.getDate()));
+                stmt.setDate(3, parseToSQLDate(sale.getDate()));
 
                 ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
@@ -85,7 +109,7 @@ public class SaleDAO {
         }
     }
     
-    public static java.sql.Date parseDate(String textDate) {
+    public static java.sql.Date parseToSQLDate(String textDate) {
         try {
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
             java.util.Date utilDate = format.parse(textDate);
@@ -94,5 +118,30 @@ public class SaleDAO {
             e.printStackTrace();
             return null;
         }
-    }    
+    }
+    
+    public double getSaleValue(int id) {
+        double output = 0;
+        DecimalFormat numberFormat = new DecimalFormat("#.00");
+        String sql = "SELECT * FROM sale_product WHERE ref_sale = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1,id);
+            System.out.println(stmt.toString());
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                output+=rs.getDouble("product_value");
+            }
+        } catch (Exception e) {
+            System.out.println("Error getting sale value: "+e);
+        }
+        output = Double.parseDouble(numberFormat.format(output).replace(",","."));
+        return output;
+    }
+    
+    public String parseToString(java.sql.Date date) {
+        if (date == null) return null;
+
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        return formato.format(date);
+    }
 }

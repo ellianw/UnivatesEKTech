@@ -4,9 +4,11 @@
  */
 package Controllers;
 
+import DAO.ClientDAO;
 import DAO.SaleDAO;
 import Entities.Sale;
 import Views.Panes.JpnSales;
+import java.util.List;
 import java.util.Map;
 import javax.swing.table.DefaultTableModel;
 
@@ -16,10 +18,12 @@ import javax.swing.table.DefaultTableModel;
  */
 public class SaleController {
     private SaleDAO dao = null;
+    private ClientDAO clientDAO = null;
     private JpnSales panel = null;
 
     public SaleController() {
         dao = new SaleDAO();
+        clientDAO = new ClientDAO();
     }
     
     public void setPanel(JpnSales panel) {
@@ -27,28 +31,31 @@ public class SaleController {
     }
     
     public DefaultTableModel getFilledTableModel() {
-        String[] colunas = { "ID", "Nome", "Descrição", "Valor","Estoque" };
+        String[] colunas = { "ID", "Cliente", "Valor", "Data"};
         DefaultTableModel tableModel = new DefaultTableModel(colunas,0);
-//        List<Client> clientList = null;
-//        
-//        try {
-//            clientList = dao.findAll();
-//        } catch (Exception e) {
-//            System.out.println("Erro ao buscar clientes: "+e);
-//        }
-//
-//        if (clientList == null ) return tableModel;
-//        
-//        for (Client s : clientList) {
-//            Object[] linha = {
-//                s.getId(),
-//                s.getName(),
-//                s.getEmail(),
-//                s.getPhone(),
-//                s.getCPF()
-//            };
-//            tableModel.addRow(linha);
-//        }
+        List<Sale> saleList = null;
+        
+        try {
+            saleList = dao.getAllSalesSimplified();
+        } catch (Exception e) {
+            System.out.println("Erro ao buscar vendas: "+e);
+        }
+
+        if (saleList == null ) return tableModel;
+        
+        for (Sale s : saleList) {
+            try {
+                Object[] linha = {
+                    s.getId(),
+                    clientDAO.findById(s.getClientId()).getName(),
+                    dao.getSaleValue(s.getId()),
+                    s.getDate(),
+                };
+                tableModel.addRow(linha);
+            } catch (Exception e) {
+                System.out.println("Error building sale list: "+e);
+            }
+        }
         
         return tableModel;
     }
