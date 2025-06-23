@@ -55,4 +55,9 @@ public class SecurityController {
         ApplicationContext.getInstance().setActiveUser(user);
         return true;
     }
+    
+    public boolean updateUserPassword(User user,String password){
+        String hashedPassword = generateHash(password);
+        return dao.updateLoginPassword(user.getId(), hashedPassword);
+    }
 }

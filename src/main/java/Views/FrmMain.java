@@ -62,6 +62,9 @@ public class FrmMain extends javax.swing.JFrame {
         productMenu = new javax.swing.JMenu();
         listProductMenuItem = new javax.swing.JMenuItem();
         productRegisterMenuItem = new javax.swing.JMenuItem();
+        userMenu = new javax.swing.JMenu();
+        changePassword = new javax.swing.JMenuItem();
+        manageUsers = new javax.swing.JMenuItem();
         reportMenu = new javax.swing.JMenu();
         exitMenu = new javax.swing.JMenu();
         exitMenuItem = new javax.swing.JMenuItem();
@@ -130,6 +133,21 @@ public class FrmMain extends javax.swing.JFrame {
 
         jMenuBar1.add(productMenu);
 
+        userMenu.setText("Usuários");
+
+        changePassword.setText("Alterar senha");
+        changePassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changePasswordActionPerformed(evt);
+            }
+        });
+        userMenu.add(changePassword);
+
+        manageUsers.setText("Gerenciar usuários");
+        userMenu.add(manageUsers);
+
+        jMenuBar1.add(userMenu);
+
         reportMenu.setText("Relatórios");
         jMenuBar1.add(reportMenu);
 
@@ -183,7 +201,14 @@ public class FrmMain extends javax.swing.JFrame {
         createSalesPane();
     }//GEN-LAST:event_listSalesMenuItemActionPerformed
 
+    private void changePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePasswordActionPerformed
+         PasswordChangeDialog editor = new PasswordChangeDialog(this, true);
+         editor.setLocationRelativeTo(null);
+         editor.setVisible(true);
+    }//GEN-LAST:event_changePasswordActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem changePassword;
     private javax.swing.JMenu clientMenu;
     private javax.swing.JMenuItem clientRegisterMenuItem;
     private javax.swing.JMenu exitMenu;
@@ -192,11 +217,13 @@ public class FrmMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem listClientMenuItem;
     private javax.swing.JMenuItem listProductMenuItem;
     private javax.swing.JMenuItem listSalesMenuItem;
+    private javax.swing.JMenuItem manageUsers;
     private javax.swing.JMenuItem newSaleMenuItem;
     private javax.swing.JMenu productMenu;
     private javax.swing.JMenuItem productRegisterMenuItem;
     private javax.swing.JMenu reportMenu;
     private javax.swing.JMenu saleMenu;
+    private javax.swing.JMenu userMenu;
     // End of variables declaration//GEN-END:variables
     
     public void createClientPane(){

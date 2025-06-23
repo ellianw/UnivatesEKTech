@@ -63,4 +63,18 @@ public class UserDAO {
         }
         return null;
     }
+    public boolean updateLoginPassword(int id, String hashPassword) {
+        String sql = "UPDATE users SET password = ? WHERE id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            System.out.println(stmt.toString());
+            stmt.setString(1, hashPassword);
+            stmt.setInt(2, id);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error validating login existence: "+e);
+            return false;
+        }
+        return true;        
+    }
+    
 }
