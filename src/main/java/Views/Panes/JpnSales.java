@@ -76,6 +76,8 @@ public class JpnSales extends javax.swing.JPanel {
         });
 
         btnEdit.setText("Editar");
+        btnEdit.setToolTipText("Não é possível editar compras.");
+        btnEdit.setEnabled(false);
         btnEdit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -134,7 +136,7 @@ public class JpnSales extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Serif", 2, 12)); // NOI18N
         jLabel2.setText("Dica: Utilize F5 como atalho para o botão de busca.");
 
-        activeUser.setText("Usuário ativo:");
+        activeUser.setText("Usuário ativo: "+context.getActiveUser().getName());
 
         javax.swing.GroupLayout hintPaneLayout = new javax.swing.GroupLayout(hintPane);
         hintPane.setLayout(hintPaneLayout);
@@ -143,7 +145,7 @@ public class JpnSales extends javax.swing.JPanel {
             .addGroup(hintPaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
                 .addComponent(activeUser)
                 .addContainerGap())
         );
@@ -162,7 +164,8 @@ public class JpnSales extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel1.setText("Vendas:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Cliente", "Data" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID" }));
+        jComboBox1.setEnabled(false);
 
         btnSearch.setText("🔎");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -235,19 +238,7 @@ public class JpnSales extends javax.swing.JPanel {
     }//GEN-LAST:event_btnNewActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        Integer id = ViewUtils.getSelectedListItemId(jtbList);
-        if (id == null) {
-            JOptionPane.showMessageDialog(null, "Selecione uma venda!", "Aviso", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        if (ViewUtils.excludePane()) {
-            
-        }        
-        //boolean status = controller.editSupplier(id);
-        //        if (!status) {
-            //            JOptionPane.showMessageDialog(null, "Erro desconhecido ao editar venda!", "Erro", JOptionPane.ERROR_MESSAGE);
-            //            return;
-            //        }
+
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelActionPerformed

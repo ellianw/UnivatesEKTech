@@ -4,6 +4,7 @@
  */
 package Views;
 
+import Views.Components.PasswordChangeDialog;
 import Views.Panes.JpnClients;
 import Views.Panes.JpnSales;
 import Views.Panes.JpnProducts;
@@ -12,6 +13,7 @@ import Views.Editors.SaleEditor;
 import Views.Editors.ClientEditor;
 import Views.Editors.ProductEditor;
 import Controllers.ClientController;
+import Controllers.ReportController;
 import Controllers.SaleController;
 import Entities.ApplicationContext;
 import java.awt.BorderLayout;
@@ -28,6 +30,7 @@ import javax.swing.JPanel;
  */
 public class FrmMain extends javax.swing.JFrame {
     private JPanel currentPane = null;
+    private ReportController reportController;
     /**
      * Creates new form FrmMain
      */
@@ -40,6 +43,7 @@ public class FrmMain extends javax.swing.JFrame {
         } catch (Exception e) {
             System.out.println("Error loading frame icon: "+e);
         }
+        reportController = new ReportController();
     }
 
 
@@ -66,6 +70,9 @@ public class FrmMain extends javax.swing.JFrame {
         changePassword = new javax.swing.JMenuItem();
         manageUsers = new javax.swing.JMenuItem();
         reportMenu = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         exitMenu = new javax.swing.JMenu();
         exitMenuItem = new javax.swing.JMenuItem();
 
@@ -149,6 +156,31 @@ public class FrmMain extends javax.swing.JFrame {
         jMenuBar1.add(userMenu);
 
         reportMenu.setText("Relatórios");
+
+        jMenuItem1.setText("Relatório de Clientes");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        reportMenu.add(jMenuItem1);
+
+        jMenuItem2.setText("Relatório de Produtos");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        reportMenu.add(jMenuItem2);
+
+        jMenuItem3.setText("Relatório de Vendas");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        reportMenu.add(jMenuItem3);
+
         jMenuBar1.add(reportMenu);
 
         exitMenu.setText("Sair");
@@ -207,6 +239,18 @@ public class FrmMain extends javax.swing.JFrame {
          editor.setVisible(true);
     }//GEN-LAST:event_changePasswordActionPerformed
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        reportController.buildProductsReport();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        reportController.buildClientsReport();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        reportController.buildSalesReport();
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem changePassword;
     private javax.swing.JMenu clientMenu;
@@ -214,6 +258,9 @@ public class FrmMain extends javax.swing.JFrame {
     private javax.swing.JMenu exitMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem listClientMenuItem;
     private javax.swing.JMenuItem listProductMenuItem;
     private javax.swing.JMenuItem listSalesMenuItem;

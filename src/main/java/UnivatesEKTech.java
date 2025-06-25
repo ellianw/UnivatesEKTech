@@ -2,7 +2,7 @@
 import Database.Database;
 import Entities.ApplicationContext;
 import Views.FrmMain;
-import Views.LoginDialog;
+import Views.Components.LoginDialog;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Dimension;
 import java.awt.Toolkit;
