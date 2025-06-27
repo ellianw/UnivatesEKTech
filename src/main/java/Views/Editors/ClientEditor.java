@@ -7,8 +7,6 @@ package Views.Editors;
 import Controllers.ClientController;
 import Entities.ApplicationContext;
 import Entities.Client;
-import Entities.Product;
-import Utils.TextUtils;
 import Utils.ViewUtils;
 import Views.Panes.JpnClients;
 import javax.swing.JOptionPane;

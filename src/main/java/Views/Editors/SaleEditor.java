@@ -9,7 +9,6 @@ import Controllers.ProductController;
 import Controllers.SaleController;
 import Entities.ApplicationContext;
 import Entities.Client;
-import Entities.Product;
 import Utils.ViewUtils;
 import Views.Panes.JpnSales;
 import java.awt.Dimension;
@@ -335,10 +334,11 @@ public class SaleEditor extends javax.swing.JDialog {
                 return;
             }
         JOptionPane.showMessageDialog(this, "Venda realizada!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
-        //jtbList.setModel(controller.getShoppingCartFilledTableModel());
-//        editingClient=null;
-//        ViewUtils.clearFields(this);
-        dispose();        // TODO add your handling code here:
+        JpnSales panel = (JpnSales)ApplicationContext.getInstance().getActivePanel();
+        if (panel != null) {
+            panel.loadTable();
+        }
+        dispose();
     }//GEN-LAST:event_sellButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -417,13 +417,13 @@ public class SaleEditor extends javax.swing.JDialog {
 
     public DefaultFormatterFactory getCurrencyFormatter() {
         DecimalFormat formato = new DecimalFormat("#,##0.00");
-        formato.setGroupingUsed(true); // separador de milhar
+        formato.setGroupingUsed(true);
         formato.setRoundingMode(RoundingMode.HALF_UP);
 
         NumberFormatter formatter = new NumberFormatter(formato);
         formatter.setValueClass(Double.class);
-        formatter.setAllowsInvalid(false); // impede letras e entrada inválida
-        formatter.setMinimum(0.0); // se quiser restringir a números positivos
+        formatter.setAllowsInvalid(false);
+        formatter.setMinimum(0.0);
 
         return new DefaultFormatterFactory(formatter);
     }

@@ -5,12 +5,9 @@
 package Controllers;
 
 import DAO.ProductDAO;
-import Entities.ApplicationContext;
 import Entities.Product;
 import Views.Components.CartTableModel;
 import Views.Editors.ProductEditor;
-import Views.Panes.JpnProducts;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -25,21 +22,9 @@ public class ProductController {
     public final static int EXCLUSIVE = 2;    
             
     private ProductDAO dao = null;
-    private JpnProducts panel = null;
-
-    public ProductController(Connection conn) {
-//        dao = new ProductDAO(ApplicationContext.getInstance().getConnection());
-    }
 
     public ProductController() {
         dao = new ProductDAO();
-        if (ApplicationContext.getInstance().getActivePanel() instanceof JpnProducts jpnProducts) {
-            panel = jpnProducts;
-        }
-    }    
-    
-    public void setPanel(JpnProducts panel) {
-        this.panel = panel;
     }
     
     public DefaultTableModel getFilledTableModel() {

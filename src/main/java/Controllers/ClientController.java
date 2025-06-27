@@ -5,14 +5,8 @@
 package Controllers;
 
 import DAO.ClientDAO;
-import Entities.ApplicationContext;
 import Entities.Client;
-import Entities.Product;
 import Views.Editors.ClientEditor;
-import Views.Editors.ProductEditor;
-import Views.Panes.JpnClients;
-import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
@@ -23,17 +17,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ClientController {
     private ClientDAO dao = null;
-    private JpnClients panel = null;
     
     public ClientController() {
         dao = new ClientDAO();
-        if (ApplicationContext.getInstance().getActivePanel() instanceof JpnClients jpnClients) {
-            panel = jpnClients;
-        }        
-    }
-    
-    public void setPanel(JpnClients panel) {
-        this.panel = panel;
     }
     
     public DefaultTableModel getFilledTableModel() {

@@ -49,5 +49,6 @@ CREATE TABLE users (
     active BOOLEAN NOT NULL
 );
 
+INSERT INTO users VALUES (DEFAULT, 'admin', 'Administrador EKTech', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918',1,true); -- Default password = admin
 INSERT INTO users VALUES (DEFAULT, 'ellian', 'Ellian Wolfart', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',1,true); -- Default password = 123
 INSERT INTO users VALUES (DEFAULT, 'karen', 'Karen Drus', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',1,true); -- Default password = 123

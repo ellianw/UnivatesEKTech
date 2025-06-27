@@ -205,6 +205,8 @@ public class JpnClients extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Serif", 2, 12)); // NOI18N
         jLabel2.setText("Dica: Utilize F5 como atalho para o botão de busca.");
 
+        activeUser.setText("Usuário ativo: "+context.getActiveUser().getName());
+
         javax.swing.GroupLayout hintPaneLayout = new javax.swing.GroupLayout(hintPane);
         hintPane.setLayout(hintPaneLayout);
         hintPaneLayout.setHorizontalGroup(

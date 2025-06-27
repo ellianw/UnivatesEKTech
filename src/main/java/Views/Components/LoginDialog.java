@@ -7,7 +7,6 @@ package Views.Components;
 import Controllers.SecurityController;
 import Entities.ApplicationContext;
 import java.awt.event.ActionEvent;
-import java.util.Arrays;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;

@@ -5,8 +5,6 @@
 package DAO;
 
 import Entities.ApplicationContext;
-import Entities.Client;
-import Entities.Product;
 import Entities.Sale;
 import java.sql.*;
 import java.text.DecimalFormat;

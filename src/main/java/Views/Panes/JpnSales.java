@@ -248,12 +248,7 @@ public class JpnSales extends javax.swing.JPanel {
             return;
         }
         if (ViewUtils.excludePane()) {
-        //        boolean status = controller.deleteClient(id);
-        //        if (!status) {
-            //            JOptionPane.showMessageDialog(null, "Erro desconhecido ao excluir venda!", "Erro", JOptionPane.ERROR_MESSAGE);
-            //            return;
-            //        }
-        //        jtbList.setModel(controller.getFilledTableModel());
+
         JOptionPane.showMessageDialog(null, "Venda deletada!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
         }
     }//GEN-LAST:event_btnDelActionPerformed
@@ -263,7 +258,7 @@ public class JpnSales extends javax.swing.JPanel {
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-//        JOptionPane.showMessageDialog(null, "Busca realizada!", "Sucesso", JOptionPane.PLAIN_MESSAGE);
+        jtbList.setModel(controller.getFilledTableModel());
     }//GEN-LAST:event_btnSearchActionPerformed
 
 
@@ -286,6 +281,10 @@ public class JpnSales extends javax.swing.JPanel {
     private javax.swing.JPanel searchPanel;
     // End of variables declaration//GEN-END:variables
 
+    public void loadTable() {
+        jtbList.setModel(controller.getFilledTableModel());
+    }
+    
     private void exitPanel(){
         FrmMain parent = (FrmMain)SwingUtilities.getWindowAncestor(this);
         parent.clearFrame(true);

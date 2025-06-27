@@ -75,25 +75,14 @@ public class SaleController {
         
         return true;
     }
-//    NEED REFACTOR
+
     public boolean deleteSale(Integer id) {
-//        try {
-//            dao.delete(id);
-//        } catch (Exception e) {
-//            System.out.println("SQL error while deleting client: "+e);
-//            return false;
-//        }
+
         return true;
     }
     
     public boolean editSale(Integer id) {
-//        try {
-//            Product product = dao.findById(id);
-//            panel.setEditingProduct(product);
-//        } catch (Exception e) {
-//            System.out.println("SQL error while editing client: "+e);
-//            return false;
-//        }
+
         return true;
     }
     

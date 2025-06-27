@@ -13,7 +13,6 @@ import Views.Panes.JpnProducts;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 
@@ -39,16 +38,6 @@ public class ProductEditor extends javax.swing.JDialog {
         }
         initComponents();
     }
-    
-//    public ProductEditor(ProductController controller) {
-//        this.controller = controller;
-//        initComponents();
-//    }
-//    
-//    public ProductEditor(ProductController controller, JpnProducts owner) {
-//        this(controller);
-//        panel = owner;
-//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -242,13 +231,13 @@ public class ProductEditor extends javax.swing.JDialog {
 
     public DefaultFormatterFactory getCurrencyFormatter() {
         DecimalFormat formato = new DecimalFormat("#,##0.00");
-        formato.setGroupingUsed(true); // separador de milhar
+        formato.setGroupingUsed(true);
         formato.setRoundingMode(RoundingMode.HALF_UP);
 
         NumberFormatter formatter = new NumberFormatter(formato);
         formatter.setValueClass(Double.class);
-        formatter.setAllowsInvalid(false); // impede letras e entrada inválida
-        formatter.setMinimum(0.0); // se quiser restringir a números positivos
+        formatter.setAllowsInvalid(false);
+        formatter.setMinimum(0.0);
 
         return new DefaultFormatterFactory(formatter);
     }

@@ -12,16 +12,13 @@ import Views.Panes.ImagePanel;
 import Views.Editors.SaleEditor;
 import Views.Editors.ClientEditor;
 import Views.Editors.ProductEditor;
-import Controllers.ClientController;
 import Controllers.ReportController;
-import Controllers.SaleController;
-import Entities.ApplicationContext;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
-import java.sql.Connection;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -70,9 +67,9 @@ public class FrmMain extends javax.swing.JFrame {
         changePassword = new javax.swing.JMenuItem();
         manageUsers = new javax.swing.JMenuItem();
         reportMenu = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        clientReportMenuItem = new javax.swing.JMenuItem();
+        productReportMenuItem = new javax.swing.JMenuItem();
+        saleReportMenuItem = new javax.swing.JMenuItem();
         exitMenu = new javax.swing.JMenu();
         exitMenuItem = new javax.swing.JMenuItem();
 
@@ -151,35 +148,40 @@ public class FrmMain extends javax.swing.JFrame {
         userMenu.add(changePassword);
 
         manageUsers.setText("Gerenciar usuários");
+        manageUsers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                manageUsersActionPerformed(evt);
+            }
+        });
         userMenu.add(manageUsers);
 
         jMenuBar1.add(userMenu);
 
         reportMenu.setText("Relatórios");
 
-        jMenuItem1.setText("Relatório de Clientes");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        clientReportMenuItem.setText("Relatório de Clientes");
+        clientReportMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                clientReportMenuItemActionPerformed(evt);
             }
         });
-        reportMenu.add(jMenuItem1);
+        reportMenu.add(clientReportMenuItem);
 
-        jMenuItem2.setText("Relatório de Produtos");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        productReportMenuItem.setText("Relatório de Produtos");
+        productReportMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                productReportMenuItemActionPerformed(evt);
             }
         });
-        reportMenu.add(jMenuItem2);
+        reportMenu.add(productReportMenuItem);
 
-        jMenuItem3.setText("Relatório de Vendas");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        saleReportMenuItem.setText("Relatório de Vendas");
+        saleReportMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                saleReportMenuItemActionPerformed(evt);
             }
         });
-        reportMenu.add(jMenuItem3);
+        reportMenu.add(saleReportMenuItem);
 
         jMenuBar1.add(reportMenu);
 
@@ -239,28 +241,31 @@ public class FrmMain extends javax.swing.JFrame {
          editor.setVisible(true);
     }//GEN-LAST:event_changePasswordActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void productReportMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productReportMenuItemActionPerformed
         reportController.buildProductsReport();
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_productReportMenuItemActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void clientReportMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientReportMenuItemActionPerformed
         reportController.buildClientsReport();
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_clientReportMenuItemActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void saleReportMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saleReportMenuItemActionPerformed
         reportController.buildSalesReport();
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_saleReportMenuItemActionPerformed
+
+    private void manageUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageUsersActionPerformed
+        JOptionPane.showMessageDialog(this, "Funcionalidade não disponível!", "Aviso", JOptionPane.WARNING_MESSAGE);
+        return;
+    }//GEN-LAST:event_manageUsersActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem changePassword;
     private javax.swing.JMenu clientMenu;
     private javax.swing.JMenuItem clientRegisterMenuItem;
+    private javax.swing.JMenuItem clientReportMenuItem;
     private javax.swing.JMenu exitMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem listClientMenuItem;
     private javax.swing.JMenuItem listProductMenuItem;
     private javax.swing.JMenuItem listSalesMenuItem;
@@ -268,8 +273,10 @@ public class FrmMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem newSaleMenuItem;
     private javax.swing.JMenu productMenu;
     private javax.swing.JMenuItem productRegisterMenuItem;
+    private javax.swing.JMenuItem productReportMenuItem;
     private javax.swing.JMenu reportMenu;
     private javax.swing.JMenu saleMenu;
+    private javax.swing.JMenuItem saleReportMenuItem;
     private javax.swing.JMenu userMenu;
     // End of variables declaration//GEN-END:variables
     
